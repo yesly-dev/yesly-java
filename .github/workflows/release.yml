@@ -1,5 +1,6 @@
 # Publishes to Maven Central when a tag such as v0.1.0 is pushed. Needs the
-# secrets listed in docs/publishing.md.
+# environment secrets CENTRAL_TOKEN_USERNAME, CENTRAL_TOKEN_PASSWORD,
+# MAVEN_GPG_KEY and MAVEN_GPG_PASSPHRASE.
 name: Release
 
 on:

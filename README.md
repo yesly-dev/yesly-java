@@ -2,8 +2,7 @@
 
 The official Java library for the Yesly API.
 
-> Status: 0.1.0, not published yet. Covers API version `2026-10-01`. How to
-> publish it: [docs/publishing.md](docs/publishing.md).
+> Status: 0.1.0, not published yet. Covers API version `2026-10-01`.
 
 ## Install
 
@@ -126,12 +125,11 @@ node ../yesly-openapi/sdk/generate.mjs java .
 
 ```bash
 mvn -q test-compile dependency:build-classpath -Dmdep.outputFile=target/cp.txt
-YESLY_API_KEY=ysk_test_… YESLY_BASE_URL=https://api.dev.yesly.dev/v1 \
+YESLY_API_KEY=ysk_test_… \
   java -cp target/classes:target/test-classes:$(cat target/cp.txt) io.yesly.smoke.Smoke
 ```
 
 ## Releasing
 
 Bump `<version>` in `pom.xml` and `Version.VERSION`, then push a tag
-`v<version>`. First-time registration on Maven Central:
-[docs/publishing.md](docs/publishing.md).
+`v<version>`.
