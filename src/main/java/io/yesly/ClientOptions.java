@@ -41,7 +41,7 @@ public final class ClientOptions {
       return this;
     }
 
-    /** Defaults to {@code https://api.yesly.dev/v1}, or {@code YESLY_BASE_URL} when set. */
+    /** Defaults to {@code https://api.yesly.dev/v1}, or {@code YESLY_BASE_URL} when set. Must be HTTPS, except for localhost. */
     public Builder baseUrl(String baseUrl) {
       this.baseUrl = baseUrl;
       return this;

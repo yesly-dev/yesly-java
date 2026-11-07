@@ -6,6 +6,8 @@ import io.yesly.exception.YeslyException;
 import io.yesly.http.HttpTransport;
 import io.yesly.http.JdkTransport;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.net.http.HttpTimeoutException;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +32,7 @@ public class Client {
   protected Client(ClientOptions o) {
     this.apiKey = o.apiKey != null ? o.apiKey : env("YESLY_API_KEY");
     String base = o.baseUrl != null ? o.baseUrl : env("YESLY_BASE_URL");
-    this.baseUrl = (base != null ? base : ApiVersion.BASE_URL).replaceAll("/+$", "");
+    this.baseUrl = checkBaseUrl((base != null ? base : ApiVersion.BASE_URL).replaceAll("/+$", ""));
     this.apiVersion = o.apiVersion != null ? o.apiVersion : ApiVersion.CURRENT;
     this.timeout = o.timeout;
     this.maxRetries = o.maxRetries;
@@ -175,6 +177,21 @@ public class Client {
   private static double backoff(int attempt) {
     double base = Math.min(0.5 * Math.pow(2, attempt), 8.0);
     return base / 2 + ThreadLocalRandom.current().nextDouble() * base / 2;
+  }
+
+  /** The API key goes in every request, so the base URL must be HTTPS; plain HTTP only to this machine. */
+  private static String checkBaseUrl(String baseUrl) {
+    URI uri;
+    try {
+      uri = new URI(baseUrl);
+    } catch (URISyntaxException e) {
+      throw new YeslyException("The base URL is not a valid URL.");
+    }
+    String scheme = uri.getScheme();
+    String host = uri.getHost();
+    if ("https".equalsIgnoreCase(scheme) && host != null && !host.isEmpty()) return baseUrl;
+    if ("http".equalsIgnoreCase(scheme) && ("localhost".equalsIgnoreCase(host) || "127.0.0.1".equals(host) || "[::1]".equals(host))) return baseUrl;
+    throw new YeslyException("The base URL must use https:// (http:// is only allowed for localhost).");
   }
 
   private static String env(String name) {

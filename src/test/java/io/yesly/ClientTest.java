@@ -146,4 +146,13 @@ class ClientTest {
     }
     assertEquals("test", new Yesly("ysk_test_1").mode());
   }
+
+  @Test
+  void baseUrlMustBeHttpsExceptForLocalhost() {
+    for (String url : new String[] {"http://localhost:4010", "http://127.0.0.1:4010/v1", "http://[::1]:4010"}) {
+      assertEquals(url, new Yesly(ClientOptions.builder().apiKey("ysk_test_1").baseUrl(url).build()).getBaseUrl());
+    }
+    YeslyException e = assertThrows(YeslyException.class, () -> new Yesly(ClientOptions.builder().apiKey("ysk_test_1").baseUrl("http://api.yesly.dev/v1").build()));
+    assertTrue(e.getMessage().contains("must use https"));
+  }
 }
