@@ -56,6 +56,9 @@ public final class Appointment {
   @JsonProperty("answer")
   private Answer answer;
 
+  @JsonProperty("reschedule_request")
+  private RescheduleRequest rescheduleRequest;
+
   @JsonProperty("cancellation")
   private Cancellation cancellation;
 
@@ -105,7 +108,7 @@ public final class Appointment {
   }
 
   /**
-   * - `scheduled`: created, waiting for `first_contact_at`. - `in_progress`: Yesly is contacting the customer. - `confirmed`: the customer will be there. - `rescheduled`: the customer moved it to one of your free slots. - `cancelled`: cancelled by the customer or by you. - `no_reply`: no answer on any channel. Your team should call.
+   * - `scheduled`: created, waiting for `first_contact_at`. - `in_progress`: Yesly is contacting the customer. - `confirmed`: the customer will be there. - `rescheduled`: the customer moved it to one of your free slots. - `reschedule_requested`: the customer wants another day and there was no free slot that suited them; `reschedule_request` says which days and when. Set the new `slot` and confirmation starts again. - `cancelled`: cancelled by the customer or by you. - `no_reply`: no answer on any channel. Your team should call.
    */
   public String getStatus() {
     return status;
@@ -165,6 +168,13 @@ public final class Appointment {
    */
   public Answer getAnswer() {
     return answer;
+  }
+
+  /**
+   * What the customer would like instead, when they asked for another day without picking a slot, or `null`.
+   */
+  public RescheduleRequest getRescheduleRequest() {
+    return rescheduleRequest;
   }
 
   /**
@@ -239,6 +249,7 @@ public final class Appointment {
     private List<String> channels;
     private String firstContactAt;
     private Answer answer;
+    private RescheduleRequest rescheduleRequest;
     private Cancellation cancellation;
     private List<Attempt> attempts;
     private Double cost;
@@ -279,7 +290,7 @@ public final class Appointment {
     }
 
     /**
-     * - `scheduled`: created, waiting for `first_contact_at`. - `in_progress`: Yesly is contacting the customer. - `confirmed`: the customer will be there. - `rescheduled`: the customer moved it to one of your free slots. - `cancelled`: cancelled by the customer or by you. - `no_reply`: no answer on any channel. Your team should call.
+     * - `scheduled`: created, waiting for `first_contact_at`. - `in_progress`: Yesly is contacting the customer. - `confirmed`: the customer will be there. - `rescheduled`: the customer moved it to one of your free slots. - `reschedule_requested`: the customer wants another day and there was no free slot that suited them; `reschedule_request` says which days and when. Set the new `slot` and confirmation starts again. - `cancelled`: cancelled by the customer or by you. - `no_reply`: no answer on any channel. Your team should call.
      */
     public Builder status(String status) {
       this.status = status;
@@ -377,6 +388,14 @@ public final class Appointment {
     }
 
     /**
+     * What the customer would like instead, when they asked for another day without picking a slot, or `null`.
+     */
+    public Builder rescheduleRequest(RescheduleRequest rescheduleRequest) {
+      this.rescheduleRequest = rescheduleRequest;
+      return this;
+    }
+
+    /**
      * Who cancelled, why and when, or `null`.
      */
     public Builder cancellation(Cancellation cancellation) {
@@ -463,6 +482,7 @@ public final class Appointment {
       o.channels = channels;
       o.firstContactAt = firstContactAt;
       o.answer = answer;
+      o.rescheduleRequest = rescheduleRequest;
       o.cancellation = cancellation;
       o.attempts = attempts;
       o.cost = cost;

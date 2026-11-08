@@ -52,7 +52,7 @@ public final class EventBase {
   }
 
   /**
-   * - `appointment.created`: created by API, import, CSV or in the dashboard. - `appointment.confirmed`: the customer confirmed. - `appointment.rescheduled`: the customer moved it to another slot. - `appointment.cancelled`: cancelled by the customer or by you. - `appointment.no_reply`: no channel got an answer. - `message.sent`: a WhatsApp message or SMS left Yesly. - `message.delivered`: the carrier or WhatsApp confirmed delivery. - `message.failed`: it could not be delivered; the next channel runs. - `call.started`: a call started ringing. - `call.completed`: a call ended, with its duration and outcome. - `call.transferred`: the call was passed to the location's phone. - `balance.low`: the balance went below your alert threshold. - `balance.topped_up`: a top-up was paid.
+   * - `appointment.created`: created by API, import, CSV or in the dashboard. - `appointment.confirmed`: the customer confirmed. - `appointment.rescheduled`: the customer moved it to another slot. - `appointment.reschedule_requested`: the customer asked for another day; set the new slot. - `appointment.cancelled`: cancelled by the customer or by you. - `appointment.no_reply`: no channel got an answer. - `message.sent`: a WhatsApp message or SMS left Yesly. - `message.delivered`: the carrier or WhatsApp confirmed delivery. - `message.failed`: it could not be delivered; the next channel runs. - `call.started`: a call started ringing. - `call.completed`: a call ended, with its duration and outcome. - `call.transferred`: the call was passed to the location's phone. - `balance.low`: the balance went below your alert threshold. - `balance.topped_up`: a top-up was paid.
    */
   public String getType() {
     return type;
@@ -120,7 +120,7 @@ public final class EventBase {
     }
 
     /**
-     * - `appointment.created`: created by API, import, CSV or in the dashboard. - `appointment.confirmed`: the customer confirmed. - `appointment.rescheduled`: the customer moved it to another slot. - `appointment.cancelled`: cancelled by the customer or by you. - `appointment.no_reply`: no channel got an answer. - `message.sent`: a WhatsApp message or SMS left Yesly. - `message.delivered`: the carrier or WhatsApp confirmed delivery. - `message.failed`: it could not be delivered; the next channel runs. - `call.started`: a call started ringing. - `call.completed`: a call ended, with its duration and outcome. - `call.transferred`: the call was passed to the location's phone. - `balance.low`: the balance went below your alert threshold. - `balance.topped_up`: a top-up was paid.
+     * - `appointment.created`: created by API, import, CSV or in the dashboard. - `appointment.confirmed`: the customer confirmed. - `appointment.rescheduled`: the customer moved it to another slot. - `appointment.reschedule_requested`: the customer asked for another day; set the new slot. - `appointment.cancelled`: cancelled by the customer or by you. - `appointment.no_reply`: no channel got an answer. - `message.sent`: a WhatsApp message or SMS left Yesly. - `message.delivered`: the carrier or WhatsApp confirmed delivery. - `message.failed`: it could not be delivered; the next channel runs. - `call.started`: a call started ringing. - `call.completed`: a call ended, with its duration and outcome. - `call.transferred`: the call was passed to the location's phone. - `balance.low`: the balance went below your alert threshold. - `balance.topped_up`: a top-up was paid.
      */
     public Builder type(String type) {
       this.type = type;

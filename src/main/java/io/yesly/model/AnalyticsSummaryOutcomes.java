@@ -23,6 +23,9 @@ public final class AnalyticsSummaryOutcomes {
   @JsonProperty("rescheduled")
   private Long rescheduled;
 
+  @JsonProperty("reschedule_requested")
+  private Long rescheduleRequested;
+
   @JsonProperty("cancelled")
   private Long cancelled;
 
@@ -40,6 +43,10 @@ public final class AnalyticsSummaryOutcomes {
 
   public Long getRescheduled() {
     return rescheduled;
+  }
+
+  public Long getRescheduleRequested() {
+    return rescheduleRequested;
   }
 
   public Long getCancelled() {
@@ -66,6 +73,7 @@ public final class AnalyticsSummaryOutcomes {
   public static final class Builder {
     private Long confirmed;
     private Long rescheduled;
+    private Long rescheduleRequested;
     private Long cancelled;
     private Long noReply;
     private Long inProgress;
@@ -79,6 +87,11 @@ public final class AnalyticsSummaryOutcomes {
 
     public Builder rescheduled(Long rescheduled) {
       this.rescheduled = rescheduled;
+      return this;
+    }
+
+    public Builder rescheduleRequested(Long rescheduleRequested) {
+      this.rescheduleRequested = rescheduleRequested;
       return this;
     }
 
@@ -101,6 +114,7 @@ public final class AnalyticsSummaryOutcomes {
       AnalyticsSummaryOutcomes o = new AnalyticsSummaryOutcomes();
       o.confirmed = confirmed;
       o.rescheduled = rescheduled;
+      o.rescheduleRequested = rescheduleRequested;
       o.cancelled = cancelled;
       o.noReply = noReply;
       o.inProgress = inProgress;

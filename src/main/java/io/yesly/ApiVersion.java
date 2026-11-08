@@ -12,7 +12,7 @@ public final class ApiVersion {
   public static final String BASE_URL = "https://api.yesly.dev/v1";
 
   /** Every webhook event type. */
-  public static final List<String> EVENT_TYPES = List.of("appointment.created", "appointment.confirmed", "appointment.rescheduled", "appointment.cancelled", "appointment.no_reply", "message.sent", "message.delivered", "message.failed", "call.started", "call.completed", "call.transferred", "balance.low", "balance.topped_up");
+  public static final List<String> EVENT_TYPES = List.of("appointment.created", "appointment.confirmed", "appointment.rescheduled", "appointment.reschedule_requested", "appointment.cancelled", "appointment.no_reply", "message.sent", "message.delivered", "message.failed", "call.started", "call.completed", "call.transferred", "balance.low", "balance.topped_up");
 
   private ApiVersion() {}
 }
