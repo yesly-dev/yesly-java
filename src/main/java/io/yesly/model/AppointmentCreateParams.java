@@ -136,9 +136,17 @@ public final class AppointmentCreateParams {
       return slot(AppointmentCreateParamsSlot.builder().start(start).end(end).build());
     }
 
+    public Builder slot(String start) {
+      return slot(AppointmentCreateParamsSlot.builder().start(start).build());
+    }
+
     public Builder customer(AppointmentCreateParamsCustomer customer) {
       this.customer = customer;
       return this;
+    }
+
+    public Builder customer(String name, String phone, String email) {
+      return customer(AppointmentCreateParamsCustomer.builder().name(name).phone(phone).email(email).build());
     }
 
     public Builder customer(String name, String phone) {

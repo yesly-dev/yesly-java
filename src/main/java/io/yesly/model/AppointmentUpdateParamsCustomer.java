@@ -20,6 +20,9 @@ public final class AppointmentUpdateParamsCustomer {
   @JsonProperty("phone")
   private String phone;
 
+  @JsonProperty("email")
+  private String email;
+
   private AppointmentUpdateParamsCustomer() {}
 
   /**
@@ -36,6 +39,13 @@ public final class AppointmentUpdateParamsCustomer {
     return phone;
   }
 
+  /**
+   * New email; `null` removes it.
+   */
+  public String getEmail() {
+    return email;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -48,6 +58,7 @@ public final class AppointmentUpdateParamsCustomer {
   public static final class Builder {
     private String name;
     private String phone;
+    private String email;
 
     private Builder() {}
 
@@ -67,10 +78,19 @@ public final class AppointmentUpdateParamsCustomer {
       return this;
     }
 
+    /**
+     * New email; `null` removes it.
+     */
+    public Builder email(String email) {
+      this.email = email;
+      return this;
+    }
+
     public AppointmentUpdateParamsCustomer build() {
       AppointmentUpdateParamsCustomer o = new AppointmentUpdateParamsCustomer();
       o.name = name;
       o.phone = phone;
+      o.email = email;
       return o;
     }
   }

@@ -122,8 +122,8 @@ public final class AppointmentUpdateParams {
       return this;
     }
 
-    public Builder customer(String name, String phone) {
-      return customer(AppointmentUpdateParamsCustomer.builder().name(name).phone(phone).build());
+    public Builder customer(String name, String phone, String email) {
+      return customer(AppointmentUpdateParamsCustomer.builder().name(name).phone(phone).email(email).build());
     }
 
     /**

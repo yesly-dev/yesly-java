@@ -20,6 +20,9 @@ public final class AppointmentCreateCustomer {
   @JsonProperty("phone")
   private String phone;
 
+  @JsonProperty("email")
+  private String email;
+
   private AppointmentCreateCustomer() {}
 
   /**
@@ -36,6 +39,13 @@ public final class AppointmentCreateCustomer {
     return phone;
   }
 
+  /**
+   * Email for the `email` channel. Optional.
+   */
+  public String getEmail() {
+    return email;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -48,6 +58,7 @@ public final class AppointmentCreateCustomer {
   public static final class Builder {
     private String name;
     private String phone;
+    private String email;
 
     private Builder() {}
 
@@ -67,10 +78,19 @@ public final class AppointmentCreateCustomer {
       return this;
     }
 
+    /**
+     * Email for the `email` channel. Optional.
+     */
+    public Builder email(String email) {
+      this.email = email;
+      return this;
+    }
+
     public AppointmentCreateCustomer build() {
       AppointmentCreateCustomer o = new AppointmentCreateCustomer();
       o.name = name;
       o.phone = phone;
+      o.email = email;
       return o;
     }
   }

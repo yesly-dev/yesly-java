@@ -159,8 +159,8 @@ public final class AnalyticsSummary {
       return this;
     }
 
-    public Builder answeredBy(Long whatsapp, Long sms, Long voice) {
-      return answeredBy(AnalyticsSummaryAnsweredBy.builder().whatsapp(whatsapp).sms(sms).voice(voice).build());
+    public Builder answeredBy(Long whatsapp, Long sms, Long voice, Long email) {
+      return answeredBy(AnalyticsSummaryAnsweredBy.builder().whatsapp(whatsapp).sms(sms).voice(voice).email(email).build());
     }
 
     public Builder medianMinutesToAnswer(Double medianMinutesToAnswer) {
@@ -173,8 +173,8 @@ public final class AnalyticsSummary {
       return this;
     }
 
-    public Builder usage(Long whatsappMessages, Long smsMessages, Double voiceMinutes) {
-      return usage(AnalyticsSummaryUsage.builder().whatsappMessages(whatsappMessages).smsMessages(smsMessages).voiceMinutes(voiceMinutes).build());
+    public Builder usage(Long whatsappMessages, Long smsMessages, Double voiceMinutes, Long emailMessages) {
+      return usage(AnalyticsSummaryUsage.builder().whatsappMessages(whatsappMessages).smsMessages(smsMessages).voiceMinutes(voiceMinutes).emailMessages(emailMessages).build());
     }
 
     public Builder spend(AnalyticsSummarySpend spend) {

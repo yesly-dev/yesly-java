@@ -182,7 +182,7 @@ public final class Appointment {
   }
 
   /**
-   * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, voice 0.30 per answered minute; unanswered calls are free.
+   * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per answered minute; unanswered calls are free.
    */
   public Double getCost() {
     return cost;
@@ -334,6 +334,10 @@ public final class Appointment {
       return this;
     }
 
+    public Builder customer(String name, String phone, String email) {
+      return customer(Customer.builder().name(name).phone(phone).email(email).build());
+    }
+
     public Builder customer(String name, String phone) {
       return customer(Customer.builder().name(name).phone(phone).build());
     }
@@ -399,7 +403,7 @@ public final class Appointment {
     }
 
     /**
-     * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, voice 0.30 per answered minute; unanswered calls are free.
+     * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per answered minute; unanswered calls are free.
      */
     public Builder cost(Double cost) {
       this.cost = cost;

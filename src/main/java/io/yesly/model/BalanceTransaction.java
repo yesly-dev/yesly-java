@@ -89,7 +89,7 @@ public final class BalanceTransaction {
   }
 
   /**
-   * `message` for WhatsApp and SMS, `minute` for voice.
+   * `message` for WhatsApp, SMS and email, `minute` for voice.
    */
   public String getUnit() {
     return unit;
@@ -187,7 +187,7 @@ public final class BalanceTransaction {
     }
 
     /**
-     * `message` for WhatsApp and SMS, `minute` for voice.
+     * `message` for WhatsApp, SMS and email, `minute` for voice.
      */
     public Builder unit(String unit) {
       this.unit = unit;

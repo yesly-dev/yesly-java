@@ -26,6 +26,9 @@ public final class AnalyticsSummaryAnsweredBy {
   @JsonProperty("voice")
   private Long voice;
 
+  @JsonProperty("email")
+  private Long email;
+
   private AnalyticsSummaryAnsweredBy() {}
 
   public Long getWhatsapp() {
@@ -38,6 +41,10 @@ public final class AnalyticsSummaryAnsweredBy {
 
   public Long getVoice() {
     return voice;
+  }
+
+  public Long getEmail() {
+    return email;
   }
 
   public static Builder builder() {
@@ -53,6 +60,7 @@ public final class AnalyticsSummaryAnsweredBy {
     private Long whatsapp;
     private Long sms;
     private Long voice;
+    private Long email;
 
     private Builder() {}
 
@@ -71,11 +79,17 @@ public final class AnalyticsSummaryAnsweredBy {
       return this;
     }
 
+    public Builder email(Long email) {
+      this.email = email;
+      return this;
+    }
+
     public AnalyticsSummaryAnsweredBy build() {
       AnalyticsSummaryAnsweredBy o = new AnalyticsSummaryAnsweredBy();
       o.whatsapp = whatsapp;
       o.sms = sms;
       o.voice = voice;
+      o.email = email;
       return o;
     }
   }

@@ -23,6 +23,9 @@ public final class Customer {
   @JsonProperty("phone")
   private String phone;
 
+  @JsonProperty("email")
+  private String email;
+
   private Customer() {}
 
   /**
@@ -39,6 +42,13 @@ public final class Customer {
     return phone;
   }
 
+  /**
+   * Email for the `email` channel, lower-cased. `null` when there is none.
+   */
+  public String getEmail() {
+    return email;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -51,6 +61,7 @@ public final class Customer {
   public static final class Builder {
     private String name;
     private String phone;
+    private String email;
 
     private Builder() {}
 
@@ -70,10 +81,19 @@ public final class Customer {
       return this;
     }
 
+    /**
+     * Email for the `email` channel, lower-cased. `null` when there is none.
+     */
+    public Builder email(String email) {
+      this.email = email;
+      return this;
+    }
+
     public Customer build() {
       Customer o = new Customer();
       o.name = name;
       o.phone = phone;
+      o.email = email;
       return o;
     }
   }

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Send only what changes. Changing `slot` or `customer.phone` starts the confirmation again.
+ * Send only what changes. Changing `slot`, `customer.phone` or `customer.email` starts the confirmation again.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -122,8 +122,8 @@ public final class AppointmentUpdate {
       return this;
     }
 
-    public Builder customer(String name, String phone) {
-      return customer(AppointmentUpdateCustomer.builder().name(name).phone(phone).build());
+    public Builder customer(String name, String phone, String email) {
+      return customer(AppointmentUpdateCustomer.builder().name(name).phone(phone).email(email).build());
     }
 
     /**

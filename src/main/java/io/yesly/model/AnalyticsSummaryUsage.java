@@ -23,6 +23,9 @@ public final class AnalyticsSummaryUsage {
   @JsonProperty("voice_minutes")
   private Double voiceMinutes;
 
+  @JsonProperty("email_messages")
+  private Long emailMessages;
+
   private AnalyticsSummaryUsage() {}
 
   public Long getWhatsappMessages() {
@@ -35,6 +38,10 @@ public final class AnalyticsSummaryUsage {
 
   public Double getVoiceMinutes() {
     return voiceMinutes;
+  }
+
+  public Long getEmailMessages() {
+    return emailMessages;
   }
 
   public static Builder builder() {
@@ -50,6 +57,7 @@ public final class AnalyticsSummaryUsage {
     private Long whatsappMessages;
     private Long smsMessages;
     private Double voiceMinutes;
+    private Long emailMessages;
 
     private Builder() {}
 
@@ -68,11 +76,17 @@ public final class AnalyticsSummaryUsage {
       return this;
     }
 
+    public Builder emailMessages(Long emailMessages) {
+      this.emailMessages = emailMessages;
+      return this;
+    }
+
     public AnalyticsSummaryUsage build() {
       AnalyticsSummaryUsage o = new AnalyticsSummaryUsage();
       o.whatsappMessages = whatsappMessages;
       o.smsMessages = smsMessages;
       o.voiceMinutes = voiceMinutes;
+      o.emailMessages = emailMessages;
       return o;
     }
   }
