@@ -29,6 +29,9 @@ public final class AppointmentTypeUpdateParams {
   @JsonProperty("reschedulable")
   private Boolean reschedulable;
 
+  @JsonProperty("cancellable")
+  private Boolean cancellable;
+
   @JsonProperty("first_contact")
   private FirstContact firstContact;
 
@@ -63,6 +66,13 @@ public final class AppointmentTypeUpdateParams {
   }
 
   /**
+   * Whether the customer may cancel.
+   */
+  public Boolean getCancellable() {
+    return cancellable;
+  }
+
+  /**
    * Its own first message; `null` goes back to your account's setting.
    */
   public FirstContact getFirstContact() {
@@ -83,6 +93,7 @@ public final class AppointmentTypeUpdateParams {
     private Long minutes;
     private String instructions;
     private Boolean reschedulable;
+    private Boolean cancellable;
     private FirstContact firstContact;
 
     private Builder() {}
@@ -120,6 +131,14 @@ public final class AppointmentTypeUpdateParams {
     }
 
     /**
+     * Whether the customer may cancel.
+     */
+    public Builder cancellable(Boolean cancellable) {
+      this.cancellable = cancellable;
+      return this;
+    }
+
+    /**
      * Its own first message; `null` goes back to your account's setting.
      */
     public Builder firstContact(FirstContact firstContact) {
@@ -137,6 +156,7 @@ public final class AppointmentTypeUpdateParams {
       o.minutes = minutes;
       o.instructions = instructions;
       o.reschedulable = reschedulable;
+      o.cancellable = cancellable;
       o.firstContact = firstContact;
       return o;
     }

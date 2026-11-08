@@ -41,6 +41,9 @@ public final class AppointmentType {
   @JsonProperty("reschedulable")
   private Boolean reschedulable;
 
+  @JsonProperty("cancellable")
+  private Boolean cancellable;
+
   @JsonProperty("first_contact")
   private FirstContact firstContact;
 
@@ -103,6 +106,13 @@ public final class AppointmentType {
   }
 
   /**
+   * Whether the customer may cancel. Off for deliveries such as a parcel or a mattress; then a "no" asks for another day (if reschedulable) or goes to your team.
+   */
+  public Boolean getCancellable() {
+    return cancellable;
+  }
+
+  /**
    * When the first message goes out for this type, or `null` to use your account's setting.
    */
   public FirstContact getFirstContact() {
@@ -131,6 +141,7 @@ public final class AppointmentType {
     private String place;
     private String instructions;
     private Boolean reschedulable;
+    private Boolean cancellable;
     private FirstContact firstContact;
     private String created;
 
@@ -198,6 +209,14 @@ public final class AppointmentType {
     }
 
     /**
+     * Whether the customer may cancel. Off for deliveries such as a parcel or a mattress; then a "no" asks for another day (if reschedulable) or goes to your team.
+     */
+    public Builder cancellable(Boolean cancellable) {
+      this.cancellable = cancellable;
+      return this;
+    }
+
+    /**
      * When the first message goes out for this type, or `null` to use your account's setting.
      */
     public Builder firstContact(FirstContact firstContact) {
@@ -224,6 +243,7 @@ public final class AppointmentType {
       o.place = place;
       o.instructions = instructions;
       o.reschedulable = reschedulable;
+      o.cancellable = cancellable;
       o.firstContact = firstContact;
       o.created = created;
       return o;
