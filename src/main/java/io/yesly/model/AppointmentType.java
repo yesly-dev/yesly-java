@@ -41,6 +41,9 @@ public final class AppointmentType {
   @JsonProperty("reschedulable")
   private Boolean reschedulable;
 
+  @JsonProperty("first_contact")
+  private FirstContact firstContact;
+
   @JsonProperty("created")
   private String created;
 
@@ -99,6 +102,13 @@ public final class AppointmentType {
     return reschedulable;
   }
 
+  /**
+   * When the first message goes out for this type, or `null` to use your account's setting.
+   */
+  public FirstContact getFirstContact() {
+    return firstContact;
+  }
+
   public String getCreated() {
     return created;
   }
@@ -121,6 +131,7 @@ public final class AppointmentType {
     private String place;
     private String instructions;
     private Boolean reschedulable;
+    private FirstContact firstContact;
     private String created;
 
     private Builder() {}
@@ -186,6 +197,18 @@ public final class AppointmentType {
       return this;
     }
 
+    /**
+     * When the first message goes out for this type, or `null` to use your account's setting.
+     */
+    public Builder firstContact(FirstContact firstContact) {
+      this.firstContact = firstContact;
+      return this;
+    }
+
+    public Builder firstContact(Long daysBefore, String at, Long hoursBefore) {
+      return firstContact(FirstContact.builder().daysBefore(daysBefore).at(at).hoursBefore(hoursBefore).build());
+    }
+
     public Builder created(String created) {
       this.created = created;
       return this;
@@ -201,6 +224,7 @@ public final class AppointmentType {
       o.place = place;
       o.instructions = instructions;
       o.reschedulable = reschedulable;
+      o.firstContact = firstContact;
       o.created = created;
       return o;
     }
