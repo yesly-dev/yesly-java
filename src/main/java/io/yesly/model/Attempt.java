@@ -32,6 +32,9 @@ public final class Attempt {
   @JsonProperty("cost")
   private Double cost;
 
+  @JsonProperty("transcript")
+  private List<TranscriptLine> transcript;
+
   private Attempt() {}
 
   /**
@@ -63,6 +66,13 @@ public final class Attempt {
     return cost;
   }
 
+  /**
+   * Calls only: what the call said and what it heard, in order. A customer turn has the recognised speech in `text` (empty for a silence) or the key pressed in `key`. Kept with the appointment and deleted with it.
+   */
+  public List<TranscriptLine> getTranscript() {
+    return transcript;
+  }
+
   public static Builder builder() {
     return new Builder();
   }
@@ -78,6 +88,7 @@ public final class Attempt {
     private String status;
     private String sentAt;
     private Double cost;
+    private List<TranscriptLine> transcript;
 
     private Builder() {}
 
@@ -115,6 +126,14 @@ public final class Attempt {
       return this;
     }
 
+    /**
+     * Calls only: what the call said and what it heard, in order. A customer turn has the recognised speech in `text` (empty for a silence) or the key pressed in `key`. Kept with the appointment and deleted with it.
+     */
+    public Builder transcript(List<TranscriptLine> transcript) {
+      this.transcript = transcript;
+      return this;
+    }
+
     public Attempt build() {
       Attempt o = new Attempt();
       o.id = id;
@@ -122,6 +141,7 @@ public final class Attempt {
       o.status = status;
       o.sentAt = sentAt;
       o.cost = cost;
+      o.transcript = transcript;
       return o;
     }
   }
