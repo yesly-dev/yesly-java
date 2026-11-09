@@ -17,34 +17,23 @@ public final class WebhookEndpointsService {
   /**
    * List endpoints.
    *
-   * Lists the webhook endpoints in the key's mode.
+   * Lists all the webhook endpoints in the key's mode, in one page.
    *
    * <code>GET /webhook_endpoints</code>
    */
-  public Page<WebhookEndpoint> list(WebhookEndpointListParams params, RequestOptions options) {
-    return client.list("GET", "/webhook_endpoints", params, options, WebhookEndpoint.class);
+  public Page<WebhookEndpoint> list(RequestOptions options) {
+    return client.list("GET", "/webhook_endpoints", null, options, WebhookEndpoint.class);
   }
 
   /**
    * List endpoints.
    *
-   * Lists the webhook endpoints in the key's mode.
-   *
-   * <code>GET /webhook_endpoints</code>
-   */
-  public Page<WebhookEndpoint> list(WebhookEndpointListParams params) {
-    return list(params, null);
-  }
-
-  /**
-   * List endpoints.
-   *
-   * Lists the webhook endpoints in the key's mode.
+   * Lists all the webhook endpoints in the key's mode, in one page.
    *
    * <code>GET /webhook_endpoints</code>
    */
   public Page<WebhookEndpoint> list() {
-    return list(null, null);
+    return list(null);
   }
 
   /**
@@ -116,7 +105,7 @@ public final class WebhookEndpointsService {
   /**
    * Send a test event.
    *
-   * Sends a sample event, marked `"mode": "test"`, to the endpoint and returns what it answered. Useful to check the URL and your signature check before going live.
+   * Sends a sample event to the endpoint, signed like a real one, and returns what it answered. Useful to check the URL and your signature check before going live. The event has the `mode` of the key that calls this, and `data` is always a sample `appointment` (with only some fields), whatever the `type`. It is not stored, so it does not appear in List events.
    *
    * <code>POST /webhook_endpoints/{id}/test</code>
    */
@@ -127,7 +116,7 @@ public final class WebhookEndpointsService {
   /**
    * Send a test event.
    *
-   * Sends a sample event, marked `"mode": "test"`, to the endpoint and returns what it answered. Useful to check the URL and your signature check before going live.
+   * Sends a sample event to the endpoint, signed like a real one, and returns what it answered. Useful to check the URL and your signature check before going live. The event has the `mode` of the key that calls this, and `data` is always a sample `appointment` (with only some fields), whatever the `type`. It is not stored, so it does not appear in List events.
    *
    * <code>POST /webhook_endpoints/{id}/test</code>
    */
@@ -138,7 +127,7 @@ public final class WebhookEndpointsService {
   /**
    * Send a test event.
    *
-   * Sends a sample event, marked `"mode": "test"`, to the endpoint and returns what it answered. Useful to check the URL and your signature check before going live.
+   * Sends a sample event to the endpoint, signed like a real one, and returns what it answered. Useful to check the URL and your signature check before going live. The event has the `mode` of the key that calls this, and `data` is always a sample `appointment` (with only some fields), whatever the `type`. It is not stored, so it does not appear in List events.
    *
    * <code>POST /webhook_endpoints/{id}/test</code>
    */

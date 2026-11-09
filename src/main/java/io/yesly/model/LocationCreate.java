@@ -29,7 +29,7 @@ public final class LocationCreate {
   private LocationCreate() {}
 
   /**
-   * Lowercase letters, numbers, `-` and `_`. Cannot change later.
+   * 1 to 40 lowercase letters, numbers, `-` and `_`. Cannot change later.
    */
   public String getId() {
     return id;
@@ -50,7 +50,7 @@ public final class LocationCreate {
   }
 
   /**
-   * Phone for call transfers, E.164.
+   * Phone for call transfers, E.164. Not checked; live calls do not transfer today.
    */
   public String getTransferPhone() {
     return transferPhone;
@@ -74,7 +74,7 @@ public final class LocationCreate {
     private Builder() {}
 
     /**
-     * Lowercase letters, numbers, `-` and `_`. Cannot change later.
+     * 1 to 40 lowercase letters, numbers, `-` and `_`. Cannot change later.
      */
     public Builder id(String id) {
       this.id = id;
@@ -98,7 +98,7 @@ public final class LocationCreate {
     }
 
     /**
-     * Phone for call transfers, E.164.
+     * Phone for call transfers, E.164. Not checked; live calls do not transfer today.
      */
     public Builder transferPhone(String transferPhone) {
       this.transferPhone = transferPhone;

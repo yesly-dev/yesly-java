@@ -36,14 +36,14 @@ public final class EventData {
   }
 
   /**
-   * A WhatsApp message or SMS, in `message.*` events. The reference does not publish its full shape; like every event object it carries the appointment's `external_id` and `metadata`.
+   * A WhatsApp message, SMS or email, in `message.*` events. It is one of the appointment's attempts, as it stands when the event is recorded.
    */
   public Message getMessage() {
     return message;
   }
 
   /**
-   * A call to the customer, in `call.*` events.
+   * A call to the customer, in `call.*` events. It is one of the appointment's attempts.
    */
   public Call getCall() {
     return call;
@@ -82,7 +82,7 @@ public final class EventData {
     }
 
     /**
-     * A WhatsApp message or SMS, in `message.*` events. The reference does not publish its full shape; like every event object it carries the appointment's `external_id` and `metadata`.
+     * A WhatsApp message, SMS or email, in `message.*` events. It is one of the appointment's attempts, as it stands when the event is recorded.
      */
     public Builder message(Message message) {
       this.message = message;
@@ -90,7 +90,7 @@ public final class EventData {
     }
 
     /**
-     * A call to the customer, in `call.*` events.
+     * A call to the customer, in `call.*` events. It is one of the appointment's attempts.
      */
     public Builder call(Call call) {
       this.call = call;

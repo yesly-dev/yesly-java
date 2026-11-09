@@ -38,7 +38,7 @@ public final class BalanceListTransactionsParams {
   private BalanceListTransactionsParams() {}
 
   /**
-   * `usage` or `top_up`.
+   * `usage`, `top_up` or `adjustment`.
    */
   public String getType() {
     return type;
@@ -52,14 +52,14 @@ public final class BalanceListTransactionsParams {
   }
 
   /**
-   * On or after this day or time.
+   * On or after this day or time. A day alone means 00:00 UTC.
    */
   public String getFrom() {
     return from;
   }
 
   /**
-   * Before this day or time.
+   * On or before this day or time. A day alone means 23:59:59 UTC.
    */
   public String getTo() {
     return to;
@@ -99,7 +99,7 @@ public final class BalanceListTransactionsParams {
     private Builder() {}
 
     /**
-     * `usage` or `top_up`.
+     * `usage`, `top_up` or `adjustment`.
      */
     public Builder type(String type) {
       this.type = type;
@@ -115,7 +115,7 @@ public final class BalanceListTransactionsParams {
     }
 
     /**
-     * On or after this day or time.
+     * On or after this day or time. A day alone means 00:00 UTC.
      */
     public Builder from(String from) {
       this.from = from;
@@ -123,7 +123,7 @@ public final class BalanceListTransactionsParams {
     }
 
     /**
-     * Before this day or time.
+     * On or before this day or time. A day alone means 23:59:59 UTC.
      */
     public Builder to(String to) {
       this.to = to;

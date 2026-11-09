@@ -43,7 +43,7 @@ public final class LocationUpdateParams {
   }
 
   /**
-   * New transfer phone, E.164. An empty string removes it.
+   * New transfer phone, E.164. An empty string or `null` removes it.
    */
   public String getTransferPhone() {
     return transferPhone;
@@ -82,7 +82,7 @@ public final class LocationUpdateParams {
     }
 
     /**
-     * New transfer phone, E.164. An empty string removes it.
+     * New transfer phone, E.164. An empty string or `null` removes it.
      */
     public Builder transferPhone(String transferPhone) {
       this.transferPhone = transferPhone;

@@ -32,6 +32,9 @@ public final class WebhookTest {
   @JsonProperty("response_body")
   private String responseBody;
 
+  @JsonProperty("error")
+  private String error;
+
   private WebhookTest() {}
 
   public String getObject() {
@@ -46,7 +49,7 @@ public final class WebhookTest {
   }
 
   /**
-   * HTTP status your endpoint answered with.
+   * HTTP status your endpoint answered with. `null` when there was no answer; see `error`. Redirects are not followed.
    */
   public Long getStatusCode() {
     return statusCode;
@@ -60,10 +63,17 @@ public final class WebhookTest {
   }
 
   /**
-   * Body your endpoint answered with.
+   * Body your endpoint answered with, up to 2,000 characters. `null` when there was no answer.
    */
   public String getResponseBody() {
     return responseBody;
+  }
+
+  /**
+   * Only when there was no answer.
+   */
+  public String getError() {
+    return error;
   }
 
   public static Builder builder() {
@@ -81,6 +91,7 @@ public final class WebhookTest {
     private Long statusCode;
     private Long durationMs;
     private String responseBody;
+    private String error;
 
     private Builder() {}
 
@@ -98,7 +109,7 @@ public final class WebhookTest {
     }
 
     /**
-     * HTTP status your endpoint answered with.
+     * HTTP status your endpoint answered with. `null` when there was no answer; see `error`. Redirects are not followed.
      */
     public Builder statusCode(Long statusCode) {
       this.statusCode = statusCode;
@@ -114,10 +125,18 @@ public final class WebhookTest {
     }
 
     /**
-     * Body your endpoint answered with.
+     * Body your endpoint answered with, up to 2,000 characters. `null` when there was no answer.
      */
     public Builder responseBody(String responseBody) {
       this.responseBody = responseBody;
+      return this;
+    }
+
+    /**
+     * Only when there was no answer.
+     */
+    public Builder error(String error) {
+      this.error = error;
       return this;
     }
 
@@ -128,6 +147,7 @@ public final class WebhookTest {
       o.statusCode = statusCode;
       o.durationMs = durationMs;
       o.responseBody = responseBody;
+      o.error = error;
       return o;
     }
   }

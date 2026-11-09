@@ -12,13 +12,37 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A WhatsApp message or SMS, in `message.*` events. The reference does not publish its full shape; like every event object it carries the appointment's `external_id` and `metadata`.
+ * A WhatsApp message, SMS or email, in `message.*` events. It is one of the appointment's attempts, as it stands when the event is recorded.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class Message {
+  @JsonProperty("id")
+  private String id;
+
+  @JsonProperty("object")
+  private String object;
+
+  @JsonProperty("appointment")
+  private String appointment;
+
   @JsonProperty("external_id")
   private String externalId;
+
+  @JsonProperty("channel")
+  private String channel;
+
+  @JsonProperty("status")
+  private String status;
+
+  @JsonProperty("sent_at")
+  private String sentAt;
+
+  @JsonProperty("cost")
+  private Double cost;
+
+  @JsonProperty("error")
+  private MessageError error;
 
   @JsonProperty("metadata")
   private Map<String, String> metadata;
@@ -26,10 +50,60 @@ public final class Message {
   private Message() {}
 
   /**
+   * Id of the attempt, prefixed `att_`.
+   */
+  public String getId() {
+    return id;
+  }
+
+  public String getObject() {
+    return object;
+  }
+
+  /**
+   * Id of the appointment, prefixed `apt_`.
+   */
+  public String getAppointment() {
+    return appointment;
+  }
+
+  /**
    * The appointment's `external_id`.
    */
   public String getExternalId() {
     return externalId;
+  }
+
+  public String getChannel() {
+    return channel;
+  }
+
+  /**
+   * The attempt's status, as in the appointment's `attempts`.
+   */
+  public String getStatus() {
+    return status;
+  }
+
+  /**
+   * When it was handed to the provider, or `null`.
+   */
+  public String getSentAt() {
+    return sentAt;
+  }
+
+  /**
+   * Cost in euros. `0` when it was refused when sending (refunded).
+   */
+  public Double getCost() {
+    return cost;
+  }
+
+  /**
+   * Why it failed. Only on failed messages.
+   */
+  public MessageError getError() {
+    return error;
   }
 
   /**
@@ -49,10 +123,39 @@ public final class Message {
   }
 
   public static final class Builder {
+    private String id;
+    private String object;
+    private String appointment;
     private String externalId;
+    private String channel;
+    private String status;
+    private String sentAt;
+    private Double cost;
+    private MessageError error;
     private Map<String, String> metadata;
 
     private Builder() {}
+
+    /**
+     * Id of the attempt, prefixed `att_`.
+     */
+    public Builder id(String id) {
+      this.id = id;
+      return this;
+    }
+
+    public Builder object(String object) {
+      this.object = object;
+      return this;
+    }
+
+    /**
+     * Id of the appointment, prefixed `apt_`.
+     */
+    public Builder appointment(String appointment) {
+      this.appointment = appointment;
+      return this;
+    }
 
     /**
      * The appointment's `external_id`.
@@ -60,6 +163,47 @@ public final class Message {
     public Builder externalId(String externalId) {
       this.externalId = externalId;
       return this;
+    }
+
+    public Builder channel(String channel) {
+      this.channel = channel;
+      return this;
+    }
+
+    /**
+     * The attempt's status, as in the appointment's `attempts`.
+     */
+    public Builder status(String status) {
+      this.status = status;
+      return this;
+    }
+
+    /**
+     * When it was handed to the provider, or `null`.
+     */
+    public Builder sentAt(String sentAt) {
+      this.sentAt = sentAt;
+      return this;
+    }
+
+    /**
+     * Cost in euros. `0` when it was refused when sending (refunded).
+     */
+    public Builder cost(Double cost) {
+      this.cost = cost;
+      return this;
+    }
+
+    /**
+     * Why it failed. Only on failed messages.
+     */
+    public Builder error(MessageError error) {
+      this.error = error;
+      return this;
+    }
+
+    public Builder error(String code, String message) {
+      return error(MessageError.builder().code(code).message(message).build());
     }
 
     /**
@@ -78,7 +222,15 @@ public final class Message {
 
     public Message build() {
       Message o = new Message();
+      o.id = id;
+      o.object = object;
+      o.appointment = appointment;
       o.externalId = externalId;
+      o.channel = channel;
+      o.status = status;
+      o.sentAt = sentAt;
+      o.cost = cost;
+      o.error = error;
       o.metadata = metadata;
       return o;
     }

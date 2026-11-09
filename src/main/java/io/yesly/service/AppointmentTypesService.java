@@ -39,7 +39,7 @@ public final class AppointmentTypesService {
   /**
    * Create an appointment type.
    *
-   * Adds an appointment type. Message templates pick it up at once through `{type}`, `{time}` and `{instructions}`.
+   * Adds an appointment type. Its name and time format are used in the messages sent from then on.
    *
    * <code>POST /appointment_types</code>
    */
@@ -50,7 +50,7 @@ public final class AppointmentTypesService {
   /**
    * Create an appointment type.
    *
-   * Adds an appointment type. Message templates pick it up at once through `{type}`, `{time}` and `{instructions}`.
+   * Adds an appointment type. Its name and time format are used in the messages sent from then on.
    *
    * <code>POST /appointment_types</code>
    */

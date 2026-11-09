@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * What an appointment is. Sets how the time is shown and the instructions added to the message.
+ * What an appointment is. Sets the name and how the time is shown in messages, and what the customer may answer.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -92,7 +92,7 @@ public final class AppointmentType {
   }
 
   /**
-   * What the customer should bring or prepare. Used by the `{instructions}` variable in templates.
+   * What the customer should bring or prepare. Stored and returned; not included in messages today.
    */
   public String getInstructions() {
     return instructions;
@@ -106,7 +106,7 @@ public final class AppointmentType {
   }
 
   /**
-   * Whether the customer may cancel. Off for deliveries such as a parcel or a mattress; then a "no" asks for another day (if reschedulable) or goes to your team.
+   * Whether the customer may cancel. Off for deliveries such as a parcel or a mattress; messages then do not offer it, and on a call a "no" is taken as a request for another day (if `reschedulable`).
    */
   public Boolean getCancellable() {
     return cancellable;
@@ -193,7 +193,7 @@ public final class AppointmentType {
     }
 
     /**
-     * What the customer should bring or prepare. Used by the `{instructions}` variable in templates.
+     * What the customer should bring or prepare. Stored and returned; not included in messages today.
      */
     public Builder instructions(String instructions) {
       this.instructions = instructions;
@@ -209,7 +209,7 @@ public final class AppointmentType {
     }
 
     /**
-     * Whether the customer may cancel. Off for deliveries such as a parcel or a mattress; then a "no" asks for another day (if reschedulable) or goes to your team.
+     * Whether the customer may cancel. Off for deliveries such as a parcel or a mattress; messages then do not offer it, and on a call a "no" is taken as a request for another day (if `reschedulable`).
      */
     public Builder cancellable(Boolean cancellable) {
       this.cancellable = cancellable;

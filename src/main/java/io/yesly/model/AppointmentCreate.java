@@ -52,7 +52,7 @@ public final class AppointmentCreate {
   }
 
   /**
-   * Location id. Required when the type happens at one of your locations; otherwise optional, and used to pass calls to that location's phone.
+   * Location id, optional. For a type whose `place` is `location`, its name and address are shown in the email and on the answer page.
    */
   public String getLocation() {
     return location;
@@ -67,7 +67,7 @@ public final class AppointmentCreate {
   }
 
   /**
-   * Override the channel order for this appointment, such as `["whatsapp", "voice"]`. Only channels enabled in your account.
+   * Override the channel order for this appointment, such as `["whatsapp", "voice"]`. At least one, without repeats. Without it, your account's channels.
    */
   public List<String> getChannels() {
     return channels;
@@ -117,7 +117,7 @@ public final class AppointmentCreate {
     }
 
     /**
-     * Location id. Required when the type happens at one of your locations; otherwise optional, and used to pass calls to that location's phone.
+     * Location id, optional. For a type whose `place` is `location`, its name and address are shown in the email and on the answer page.
      */
     public Builder location(String location) {
       this.location = location;
@@ -151,7 +151,7 @@ public final class AppointmentCreate {
     }
 
     /**
-     * Override the channel order for this appointment, such as `["whatsapp", "voice"]`. Only channels enabled in your account.
+     * Override the channel order for this appointment, such as `["whatsapp", "voice"]`. At least one, without repeats. Without it, your account's channels.
      */
     public Builder channels(List<String> channels) {
       this.channels = channels;

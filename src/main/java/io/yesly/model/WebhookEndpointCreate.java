@@ -29,7 +29,7 @@ public final class WebhookEndpointCreate {
   private WebhookEndpointCreate() {}
 
   /**
-   * HTTPS URL. Self-signed certificates are refused.
+   * HTTPS URL on a public host, without a user name or password (`url_invalid` otherwise). Deliveries to a self-signed certificate fail.
    */
   public String getUrl() {
     return url;
@@ -50,7 +50,7 @@ public final class WebhookEndpointCreate {
   }
 
   /**
-   * Defaults to your account's version.
+   * Stored and returned as sent; default `2026-10-01`. It does not change the events.
    */
   public String getApiVersion() {
     return apiVersion;
@@ -74,7 +74,7 @@ public final class WebhookEndpointCreate {
     private Builder() {}
 
     /**
-     * HTTPS URL. Self-signed certificates are refused.
+     * HTTPS URL on a public host, without a user name or password (`url_invalid` otherwise). Deliveries to a self-signed certificate fail.
      */
     public Builder url(String url) {
       this.url = url;
@@ -104,7 +104,7 @@ public final class WebhookEndpointCreate {
     }
 
     /**
-     * Defaults to your account's version.
+     * Stored and returned as sent; default `2026-10-01`. It does not change the events.
      */
     public Builder apiVersion(String apiVersion) {
       this.apiVersion = apiVersion;

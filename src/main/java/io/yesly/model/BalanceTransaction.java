@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A charge (`usage`) or a top-up. Charges point to the appointment and its `external_id`.
+ * A charge (`usage`), a top-up or an adjustment. Charges point to the appointment and its `external_id`; adjustments do not.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -63,6 +63,9 @@ public final class BalanceTransaction {
     return object;
   }
 
+  /**
+   * `usage` (a charge), `top_up` (a card top-up) or `adjustment` (money given back, such as a refund for a message refused when sending).
+   */
   public String getType() {
     return type;
   }
@@ -75,7 +78,7 @@ public final class BalanceTransaction {
   }
 
   /**
-   * In euros. Negative for charges, positive for top-ups.
+   * In euros. Negative for charges, positive for top-ups and adjustments.
    */
   public Double getAmount() {
     return amount;
@@ -110,7 +113,7 @@ public final class BalanceTransaction {
   }
 
   /**
-   * Invoice number, on `top_up`.
+   * Id of the Stripe invoice, on `top_up` when Stripe issued one.
    */
   public String getInvoice() {
     return invoice;
@@ -157,6 +160,9 @@ public final class BalanceTransaction {
       return this;
     }
 
+    /**
+     * `usage` (a charge), `top_up` (a card top-up) or `adjustment` (money given back, such as a refund for a message refused when sending).
+     */
     public Builder type(String type) {
       this.type = type;
       return this;
@@ -171,7 +177,7 @@ public final class BalanceTransaction {
     }
 
     /**
-     * In euros. Negative for charges, positive for top-ups.
+     * In euros. Negative for charges, positive for top-ups and adjustments.
      */
     public Builder amount(Double amount) {
       this.amount = amount;
@@ -211,7 +217,7 @@ public final class BalanceTransaction {
     }
 
     /**
-     * Invoice number, on `top_up`.
+     * Id of the Stripe invoice, on `top_up` when Stripe issued one.
      */
     public Builder invoice(String invoice) {
       this.invoice = invoice;

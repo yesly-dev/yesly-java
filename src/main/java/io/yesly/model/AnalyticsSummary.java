@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Outcomes, which channel got the answer, how long customers took, usage and spend. Days follow your account's time zone.
+ * Outcomes, which channel got the answer, how long customers took, usage and spend. Appointments count on the day of their slot, in your account's time zone.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,13 +39,16 @@ public final class AnalyticsSummary {
   private AnalyticsSummaryAnsweredBy answeredBy;
 
   @JsonProperty("median_minutes_to_answer")
-  private Double medianMinutesToAnswer;
+  private Long medianMinutesToAnswer;
 
   @JsonProperty("usage")
   private AnalyticsSummaryUsage usage;
 
   @JsonProperty("spend")
   private AnalyticsSummarySpend spend;
+
+  @JsonProperty("days")
+  private List<AnalyticsSummaryDaysItem> days;
 
   private AnalyticsSummary() {}
 
@@ -83,16 +86,32 @@ public final class AnalyticsSummary {
     return answeredBy;
   }
 
-  public Double getMedianMinutesToAnswer() {
+  /**
+   * Median minutes from `first_contact_at` to the answer, or `null` without answers.
+   */
+  public Long getMedianMinutesToAnswer() {
     return medianMinutesToAnswer;
   }
 
+  /**
+   * Messages sent (not failed) and started call minutes.
+   */
   public AnalyticsSummaryUsage getUsage() {
     return usage;
   }
 
+  /**
+   * What the appointments cost. `0` in test mode.
+   */
   public AnalyticsSummarySpend getSpend() {
     return spend;
+  }
+
+  /**
+   * One item per day of the range, oldest first.
+   */
+  public List<AnalyticsSummaryDaysItem> getDays() {
+    return days;
   }
 
   public static Builder builder() {
@@ -112,9 +131,10 @@ public final class AnalyticsSummary {
     private Long appointments;
     private AnalyticsSummaryOutcomes outcomes;
     private AnalyticsSummaryAnsweredBy answeredBy;
-    private Double medianMinutesToAnswer;
+    private Long medianMinutesToAnswer;
     private AnalyticsSummaryUsage usage;
     private AnalyticsSummarySpend spend;
+    private List<AnalyticsSummaryDaysItem> days;
 
     private Builder() {}
 
@@ -163,11 +183,17 @@ public final class AnalyticsSummary {
       return answeredBy(AnalyticsSummaryAnsweredBy.builder().whatsapp(whatsapp).sms(sms).voice(voice).email(email).build());
     }
 
-    public Builder medianMinutesToAnswer(Double medianMinutesToAnswer) {
+    /**
+     * Median minutes from `first_contact_at` to the answer, or `null` without answers.
+     */
+    public Builder medianMinutesToAnswer(Long medianMinutesToAnswer) {
       this.medianMinutesToAnswer = medianMinutesToAnswer;
       return this;
     }
 
+    /**
+     * Messages sent (not failed) and started call minutes.
+     */
     public Builder usage(AnalyticsSummaryUsage usage) {
       this.usage = usage;
       return this;
@@ -177,6 +203,9 @@ public final class AnalyticsSummary {
       return usage(AnalyticsSummaryUsage.builder().whatsappMessages(whatsappMessages).smsMessages(smsMessages).voiceMinutes(voiceMinutes).emailMessages(emailMessages).build());
     }
 
+    /**
+     * What the appointments cost. `0` in test mode.
+     */
     public Builder spend(AnalyticsSummarySpend spend) {
       this.spend = spend;
       return this;
@@ -184,6 +213,20 @@ public final class AnalyticsSummary {
 
     public Builder spend(Double amount, String currency) {
       return spend(AnalyticsSummarySpend.builder().amount(amount).currency(currency).build());
+    }
+
+    /**
+     * One item per day of the range, oldest first.
+     */
+    public Builder days(List<AnalyticsSummaryDaysItem> days) {
+      this.days = days;
+      return this;
+    }
+
+    public Builder addDay(AnalyticsSummaryDaysItem day) {
+      if (this.days == null) this.days = new ArrayList<>();
+      this.days.add(day);
+      return this;
     }
 
     public AnalyticsSummary build() {
@@ -198,6 +241,7 @@ public final class AnalyticsSummary {
       o.medianMinutesToAnswer = medianMinutesToAnswer;
       o.usage = usage;
       o.spend = spend;
+      o.days = days;
       return o;
     }
   }

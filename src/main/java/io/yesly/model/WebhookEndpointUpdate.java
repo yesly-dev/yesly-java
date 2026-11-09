@@ -50,7 +50,7 @@ public final class WebhookEndpointUpdate {
   }
 
   /**
-   * `true` stops sending events to it until you enable it again.
+   * `true` stops sending events to it and drops its pending retries. `false` enables it again and resets its count of failed deliveries.
    */
   public Boolean getDisabled() {
     return disabled;
@@ -104,7 +104,7 @@ public final class WebhookEndpointUpdate {
     }
 
     /**
-     * `true` stops sending events to it until you enable it again.
+     * `true` stops sending events to it and drops its pending retries. `false` enables it again and resets its count of failed deliveries.
      */
     public Builder disabled(Boolean disabled) {
       this.disabled = disabled;

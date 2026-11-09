@@ -64,14 +64,14 @@ public final class AppointmentListParams {
   }
 
   /**
-   * Slot starts on or after this time.
+   * Slot starts on or after this day or time. A day starts at 00:00 in your account's time zone.
    */
   public String getFrom() {
     return from;
   }
 
   /**
-   * Slot starts before this time.
+   * Slot starts on or before this day or time. A day ends at 23:59:59 in your account's time zone.
    */
   public String getTo() {
     return to;
@@ -159,7 +159,7 @@ public final class AppointmentListParams {
     }
 
     /**
-     * Slot starts on or after this time.
+     * Slot starts on or after this day or time. A day starts at 00:00 in your account's time zone.
      */
     public Builder from(String from) {
       this.from = from;
@@ -167,7 +167,7 @@ public final class AppointmentListParams {
     }
 
     /**
-     * Slot starts before this time.
+     * Slot starts on or before this day or time. A day ends at 23:59:59 in your account's time zone.
      */
     public Builder to(String to) {
       this.to = to;

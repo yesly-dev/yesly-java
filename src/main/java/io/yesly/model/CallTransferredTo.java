@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Where the call was passed, on `call.transferred`.
+ * Where the call was passed, only on a transferred call.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,7 +33,7 @@ public final class CallTransferredTo {
   }
 
   /**
-   * Phone number in E.164 format, such as `+34612345678`.
+   * The location's `transfer_phone`.
    */
   public String getPhone() {
     return phone;
@@ -63,7 +63,7 @@ public final class CallTransferredTo {
     }
 
     /**
-     * Phone number in E.164 format, such as `+34612345678`.
+     * The location's `transfer_phone`.
      */
     public Builder phone(String phone) {
       this.phone = phone;

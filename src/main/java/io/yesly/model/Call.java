@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A call to the customer, in `call.*` events.
+ * A call to the customer, in `call.*` events. It is one of the appointment's attempts.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,13 +38,16 @@ public final class Call {
   @JsonProperty("transferred_to")
   private CallTransferredTo transferredTo;
 
+  @JsonProperty("outcome")
+  private String outcome;
+
   @JsonProperty("metadata")
   private Map<String, String> metadata;
 
   private Call() {}
 
   /**
-   * Unique id, prefixed `call_`.
+   * Id of the attempt, prefixed `att_`.
    */
   public String getId() {
     return id;
@@ -68,19 +71,32 @@ public final class Call {
     return externalId;
   }
 
+  /**
+   * When Yesly placed the call.
+   */
   public String getStartedAt() {
     return startedAt;
   }
 
+  /**
+   * Seconds of talk, once the call has ended. Missing until then.
+   */
   public Long getDurationSeconds() {
     return durationSeconds;
   }
 
   /**
-   * Where the call was passed, on `call.transferred`.
+   * Where the call was passed, only on a transferred call.
    */
   public CallTransferredTo getTransferredTo() {
     return transferredTo;
+  }
+
+  /**
+   * Only on `call.completed`. `answered` when the customer gave an answer on the call, otherwise `no_answer`.
+   */
+  public String getOutcome() {
+    return outcome;
   }
 
   /**
@@ -107,12 +123,13 @@ public final class Call {
     private String startedAt;
     private Long durationSeconds;
     private CallTransferredTo transferredTo;
+    private String outcome;
     private Map<String, String> metadata;
 
     private Builder() {}
 
     /**
-     * Unique id, prefixed `call_`.
+     * Id of the attempt, prefixed `att_`.
      */
     public Builder id(String id) {
       this.id = id;
@@ -140,18 +157,24 @@ public final class Call {
       return this;
     }
 
+    /**
+     * When Yesly placed the call.
+     */
     public Builder startedAt(String startedAt) {
       this.startedAt = startedAt;
       return this;
     }
 
+    /**
+     * Seconds of talk, once the call has ended. Missing until then.
+     */
     public Builder durationSeconds(Long durationSeconds) {
       this.durationSeconds = durationSeconds;
       return this;
     }
 
     /**
-     * Where the call was passed, on `call.transferred`.
+     * Where the call was passed, only on a transferred call.
      */
     public Builder transferredTo(CallTransferredTo transferredTo) {
       this.transferredTo = transferredTo;
@@ -160,6 +183,14 @@ public final class Call {
 
     public Builder transferredTo(String location, String phone) {
       return transferredTo(CallTransferredTo.builder().location(location).phone(phone).build());
+    }
+
+    /**
+     * Only on `call.completed`. `answered` when the customer gave an answer on the call, otherwise `no_answer`.
+     */
+    public Builder outcome(String outcome) {
+      this.outcome = outcome;
+      return this;
     }
 
     /**
@@ -185,6 +216,7 @@ public final class Call {
       o.startedAt = startedAt;
       o.durationSeconds = durationSeconds;
       o.transferredTo = transferredTo;
+      o.outcome = outcome;
       o.metadata = metadata;
       return o;
     }

@@ -23,7 +23,7 @@ public final class CallEventData {
   private CallEventData() {}
 
   /**
-   * A call to the customer, in `call.*` events.
+   * A call to the customer, in `call.*` events. It is one of the appointment's attempts.
    */
   public Call getCall() {
     return call;
@@ -44,7 +44,7 @@ public final class CallEventData {
     private Builder() {}
 
     /**
-     * A call to the customer, in `call.*` events.
+     * A call to the customer, in `call.*` events. It is one of the appointment's attempts.
      */
     public Builder call(Call call) {
       this.call = call;

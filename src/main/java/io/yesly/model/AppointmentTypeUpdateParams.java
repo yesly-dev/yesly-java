@@ -52,7 +52,7 @@ public final class AppointmentTypeUpdateParams {
   }
 
   /**
-   * New instructions. An empty string removes them.
+   * New instructions. An empty string clears them.
    */
   public String getInstructions() {
     return instructions;
@@ -115,7 +115,7 @@ public final class AppointmentTypeUpdateParams {
     }
 
     /**
-     * New instructions. An empty string removes them.
+     * New instructions. An empty string clears them.
      */
     public Builder instructions(String instructions) {
       this.instructions = instructions;

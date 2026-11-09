@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A centre, shop or depot. Where location appointments happen, and the phone a call is passed to when the customer wants a person.
+ * A centre, shop or depot where location appointments happen.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -56,14 +56,14 @@ public final class Location {
   }
 
   /**
-   * Address used in the messages for appointments held there.
+   * Address shown in the email and on the answer page for appointments held there.
    */
   public String getAddress() {
     return address;
   }
 
   /**
-   * Where calls are passed when the customer asks for a person. Without it, Yesly offers a call back and flags the appointment for your team.
+   * Phone to pass calls to when the customer asks for a person. Stored and returned; live calls do not transfer today.
    */
   public String getTransferPhone() {
     return transferPhone;
@@ -114,7 +114,7 @@ public final class Location {
     }
 
     /**
-     * Address used in the messages for appointments held there.
+     * Address shown in the email and on the answer page for appointments held there.
      */
     public Builder address(String address) {
       this.address = address;
@@ -122,7 +122,7 @@ public final class Location {
     }
 
     /**
-     * Where calls are passed when the customer asks for a person. Without it, Yesly offers a call back and flags the appointment for your team.
+     * Phone to pass calls to when the customer asks for a person. Stored and returned; live calls do not transfer today.
      */
     public Builder transferPhone(String transferPhone) {
       this.transferPhone = transferPhone;

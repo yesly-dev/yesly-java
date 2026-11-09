@@ -17,7 +17,7 @@ public final class BalanceService {
   /**
    * Retrieve the balance.
    *
-   * Yesly is prepaid. Each WhatsApp message, SMS and minute of answered call is taken from the balance at the public price; calls nobody picks up are free. Top-ups are made by card in the dashboard and cannot be made through the API.
+   * Yesly is prepaid. Each WhatsApp message, SMS, email and started minute of a call that was picked up is taken from the balance at the public price; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. When a customer asks for another day on a call, the SMS with the link to pick a day is charged as an SMS. Top-ups are made by card in the dashboard and cannot be made through the API.
    *
    * <code>GET /balance</code>
    */
@@ -28,7 +28,7 @@ public final class BalanceService {
   /**
    * Retrieve the balance.
    *
-   * Yesly is prepaid. Each WhatsApp message, SMS and minute of answered call is taken from the balance at the public price; calls nobody picks up are free. Top-ups are made by card in the dashboard and cannot be made through the API.
+   * Yesly is prepaid. Each WhatsApp message, SMS, email and started minute of a call that was picked up is taken from the balance at the public price; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. When a customer asks for another day on a call, the SMS with the link to pick a day is charged as an SMS. Top-ups are made by card in the dashboard and cannot be made through the API.
    *
    * <code>GET /balance</code>
    */
@@ -39,7 +39,7 @@ public final class BalanceService {
   /**
    * List balance transactions.
    *
-   * Every charge and top-up, newest first. Charges point to the appointment and its `external_id`, so you can pass the cost on to an order, route or customer.
+   * Every charge, top-up and adjustment, newest first. Charges point to the appointment and its `external_id`, so you can pass the cost on to an order, route or customer. Refunds of failed messages (`adjustment`) do not point to the appointment.
    *
    * <code>GET /balance/transactions</code>
    */
@@ -50,7 +50,7 @@ public final class BalanceService {
   /**
    * List balance transactions.
    *
-   * Every charge and top-up, newest first. Charges point to the appointment and its `external_id`, so you can pass the cost on to an order, route or customer.
+   * Every charge, top-up and adjustment, newest first. Charges point to the appointment and its `external_id`, so you can pass the cost on to an order, route or customer. Refunds of failed messages (`adjustment`) do not point to the appointment.
    *
    * <code>GET /balance/transactions</code>
    */
@@ -61,7 +61,7 @@ public final class BalanceService {
   /**
    * List balance transactions.
    *
-   * Every charge and top-up, newest first. Charges point to the appointment and its `external_id`, so you can pass the cost on to an order, route or customer.
+   * Every charge, top-up and adjustment, newest first. Charges point to the appointment and its `external_id`, so you can pass the cost on to an order, route or customer. Refunds of failed messages (`adjustment`) do not point to the appointment.
    *
    * <code>GET /balance/transactions</code>
    */

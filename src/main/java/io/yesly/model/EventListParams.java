@@ -35,7 +35,7 @@ public final class EventListParams {
   private EventListParams() {}
 
   /**
-   * Only this event type. `appointment.*` matches a whole group.
+   * Only this event type, matched exactly.
    */
   public String getType() {
     return type;
@@ -49,7 +49,7 @@ public final class EventListParams {
   }
 
   /**
-   * Events created on or after this time.
+   * Events created on or after this time. A day alone means 00:00 UTC.
    */
   public String getFrom() {
     return from;
@@ -88,7 +88,7 @@ public final class EventListParams {
     private Builder() {}
 
     /**
-     * Only this event type. `appointment.*` matches a whole group.
+     * Only this event type, matched exactly.
      */
     public Builder type(String type) {
       this.type = type;
@@ -104,7 +104,7 @@ public final class EventListParams {
     }
 
     /**
-     * Events created on or after this time.
+     * Events created on or after this time. A day alone means 00:00 UTC.
      */
     public Builder from(String from) {
       this.from = from;

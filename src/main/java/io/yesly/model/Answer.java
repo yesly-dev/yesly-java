@@ -33,7 +33,7 @@ public final class Answer {
   }
 
   /**
-   * Contact channel. `email` needs `customer.email` on the appointment; without it the step is skipped.
+   * Contact channel.
    */
   public String getChannel() {
     return channel;
@@ -65,7 +65,7 @@ public final class Answer {
     }
 
     /**
-     * Contact channel. `email` needs `customer.email` on the appointment; without it the step is skipped.
+     * Contact channel.
      */
     public Builder channel(String channel) {
       this.channel = channel;

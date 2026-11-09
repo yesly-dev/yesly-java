@@ -47,7 +47,7 @@ public final class AppointmentTypeCreateParams {
   private AppointmentTypeCreateParams() {}
 
   /**
-   * Lowercase letters, numbers, `-` and `_`. Cannot change later.
+   * 1 to 40 lowercase letters, numbers, `-` and `_`. Cannot change later.
    */
   public String getId() {
     return id;
@@ -82,7 +82,7 @@ public final class AppointmentTypeCreateParams {
   }
 
   /**
-   * Optional instructions for the customer.
+   * Optional instructions for the customer. Not included in messages today.
    */
   public String getInstructions() {
     return instructions;
@@ -126,7 +126,7 @@ public final class AppointmentTypeCreateParams {
     private Builder() {}
 
     /**
-     * Lowercase letters, numbers, `-` and `_`. Cannot change later.
+     * 1 to 40 lowercase letters, numbers, `-` and `_`. Cannot change later.
      */
     public Builder id(String id) {
       this.id = id;
@@ -166,7 +166,7 @@ public final class AppointmentTypeCreateParams {
     }
 
     /**
-     * Optional instructions for the customer.
+     * Optional instructions for the customer. Not included in messages today.
      */
     public Builder instructions(String instructions) {
       this.instructions = instructions;

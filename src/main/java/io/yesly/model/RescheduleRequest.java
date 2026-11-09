@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The customer's wish when there was no free slot to pick, or none suited them.
+ * The customer's wish when they asked for another day without picking a free time.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,7 +32,7 @@ public final class RescheduleRequest {
   private RescheduleRequest() {}
 
   /**
-   * Up to 3 days that would suit them (`YYYY-MM-DD`, in your time zone). Empty when they just asked for another day.
+   * Up to 3 days that would suit them (`YYYY-MM-DD`, in your time zone). Empty when they just asked for another day, such as on a call.
    */
   public List<String> getDates() {
     return dates;
@@ -43,7 +43,7 @@ public final class RescheduleRequest {
   }
 
   /**
-   * Anything else they wrote, up to 300 characters.
+   * Anything else they wrote, up to 500 characters. From a call, what the customer said, or a note that they asked on the call and did not pick a day.
    */
   public String getNote() {
     return note;
@@ -71,7 +71,7 @@ public final class RescheduleRequest {
     private Builder() {}
 
     /**
-     * Up to 3 days that would suit them (`YYYY-MM-DD`, in your time zone). Empty when they just asked for another day.
+     * Up to 3 days that would suit them (`YYYY-MM-DD`, in your time zone). Empty when they just asked for another day, such as on a call.
      */
     public Builder dates(List<String> dates) {
       this.dates = dates;
@@ -90,7 +90,7 @@ public final class RescheduleRequest {
     }
 
     /**
-     * Anything else they wrote, up to 300 characters.
+     * Anything else they wrote, up to 500 characters. From a call, what the customer said, or a note that they asked on the call and did not pick a day.
      */
     public Builder note(String note) {
       this.note = note;

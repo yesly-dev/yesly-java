@@ -17,7 +17,7 @@ public final class AppointmentsService {
   /**
    * List appointments.
    *
-   * Lists appointments, newest first. A common use is to ask, each afternoon, which of tomorrow's appointments ended with `no_reply` so your team can call them.
+   * Lists appointments. With `status`, `date`, `from`, `to` or `metadata` the list is in slot order, soonest first; otherwise it is newest first, by creation. A `date`, `from` or `to` filter without `status` or `metadata` covers at most 62 days. A common use is to ask, each afternoon, which of tomorrow's appointments ended with `no_reply` so your team can call them.
    *
    * <code>GET /appointments</code>
    */
@@ -28,7 +28,7 @@ public final class AppointmentsService {
   /**
    * List appointments.
    *
-   * Lists appointments, newest first. A common use is to ask, each afternoon, which of tomorrow's appointments ended with `no_reply` so your team can call them.
+   * Lists appointments. With `status`, `date`, `from`, `to` or `metadata` the list is in slot order, soonest first; otherwise it is newest first, by creation. A `date`, `from` or `to` filter without `status` or `metadata` covers at most 62 days. A common use is to ask, each afternoon, which of tomorrow's appointments ended with `no_reply` so your team can call them.
    *
    * <code>GET /appointments</code>
    */
@@ -39,7 +39,7 @@ public final class AppointmentsService {
   /**
    * List appointments.
    *
-   * Lists appointments, newest first. A common use is to ask, each afternoon, which of tomorrow's appointments ended with `no_reply` so your team can call them.
+   * Lists appointments. With `status`, `date`, `from`, `to` or `metadata` the list is in slot order, soonest first; otherwise it is newest first, by creation. A `date`, `from` or `to` filter without `status` or `metadata` covers at most 62 days. A common use is to ask, each afternoon, which of tomorrow's appointments ended with `no_reply` so your team can call them.
    *
    * <code>GET /appointments</code>
    */
@@ -50,7 +50,7 @@ public final class AppointmentsService {
   /**
    * Create an appointment.
    *
-   * Creates an appointment and schedules the first contact. By default Yesly writes the day before at 10:00 and moves through your channels if there is no answer; if the appointment is booked after that moment, contact starts at the next allowed time within your contact hours.
+   * Creates an appointment and schedules the first contact. By default Yesly writes the day before at 10:00 and moves through your channels if there is no answer; if the appointment is booked after that moment, contact starts at the next allowed time within your contact hours. If no contact time is left before the slot starts, `first_contact_at` is `null` and the customer is not contacted.
    *
    * <code>POST /appointments</code>
    */
@@ -61,7 +61,7 @@ public final class AppointmentsService {
   /**
    * Create an appointment.
    *
-   * Creates an appointment and schedules the first contact. By default Yesly writes the day before at 10:00 and moves through your channels if there is no answer; if the appointment is booked after that moment, contact starts at the next allowed time within your contact hours.
+   * Creates an appointment and schedules the first contact. By default Yesly writes the day before at 10:00 and moves through your channels if there is no answer; if the appointment is booked after that moment, contact starts at the next allowed time within your contact hours. If no contact time is left before the slot starts, `first_contact_at` is `null` and the customer is not contacted.
    *
    * <code>POST /appointments</code>
    */
@@ -94,7 +94,7 @@ public final class AppointmentsService {
   /**
    * Update an appointment.
    *
-   * Changes an appointment. Send only what changes. `metadata` is merged: keys you send are set, a key sent as an empty string is removed.
+   * Changes an appointment. Send only what changes. `metadata` is merged: keys you send are set, a key sent as `null` or an empty string is removed.
    *
    * <code>PATCH /appointments/{id}</code>
    */
@@ -105,7 +105,7 @@ public final class AppointmentsService {
   /**
    * Update an appointment.
    *
-   * Changes an appointment. Send only what changes. `metadata` is merged: keys you send are set, a key sent as an empty string is removed.
+   * Changes an appointment. Send only what changes. `metadata` is merged: keys you send are set, a key sent as `null` or an empty string is removed.
    *
    * <code>PATCH /appointments/{id}</code>
    */

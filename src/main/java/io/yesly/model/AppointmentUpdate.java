@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Send only what changes. Changing `slot`, `customer.phone` or `customer.email` starts the confirmation again.
+ * Send only what changes. Changing the slot start, `customer.phone`, `customer.email` or `channels` starts the confirmation again.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -45,7 +45,7 @@ public final class AppointmentUpdate {
   }
 
   /**
-   * New location id.
+   * New location id; `null` removes it.
    */
   public String getLocation() {
     return location;
@@ -60,14 +60,14 @@ public final class AppointmentUpdate {
   }
 
   /**
-   * New channel order for this appointment.
+   * New channel order for this appointment. At least one, without repeats.
    */
   public List<String> getChannels() {
     return channels;
   }
 
   /**
-   * Keys to set, merged with the existing ones. An empty string removes the key.
+   * Keys to set, merged with the existing ones. A value of `null` or an empty string removes the key. At most 20 keys after the merge.
    */
   public Map<String, String> getMetadata() {
     return metadata;
@@ -101,7 +101,7 @@ public final class AppointmentUpdate {
     }
 
     /**
-     * New location id.
+     * New location id; `null` removes it.
      */
     public Builder location(String location) {
       this.location = location;
@@ -117,6 +117,10 @@ public final class AppointmentUpdate {
       return slot(AppointmentUpdateSlot.builder().start(start).end(end).build());
     }
 
+    public Builder slot(String start) {
+      return slot(AppointmentUpdateSlot.builder().start(start).build());
+    }
+
     public Builder customer(AppointmentUpdateCustomer customer) {
       this.customer = customer;
       return this;
@@ -127,7 +131,7 @@ public final class AppointmentUpdate {
     }
 
     /**
-     * New channel order for this appointment.
+     * New channel order for this appointment. At least one, without repeats.
      */
     public Builder channels(List<String> channels) {
       this.channels = channels;
@@ -141,7 +145,7 @@ public final class AppointmentUpdate {
     }
 
     /**
-     * Keys to set, merged with the existing ones. An empty string removes the key.
+     * Keys to set, merged with the existing ones. A value of `null` or an empty string removes the key. At most 20 keys after the merge.
      */
     public Builder metadata(Map<String, String> metadata) {
       this.metadata = metadata;

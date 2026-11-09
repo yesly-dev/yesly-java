@@ -45,22 +45,28 @@ public final class Attempt {
   }
 
   /**
-   * Contact channel. `email` needs `customer.email` on the appointment; without it the step is skipped.
+   * Contact channel.
    */
   public String getChannel() {
     return channel;
   }
 
+  /**
+   * `queued` (not handed over yet), `sent`, `delivered`, `read` (WhatsApp), `answered`, `no_answer` (calls), `failed`, or `transferred` (calls passed to a location's phone).
+   */
   public String getStatus() {
     return status;
   }
 
+  /**
+   * When it was handed to the provider. `null` while `queued` or when it failed before.
+   */
   public String getSentAt() {
     return sentAt;
   }
 
   /**
-   * Cost of this attempt, in euros.
+   * Cost of this attempt, in euros. `0` for a message refused when sending (refunded). On a call, includes the SMS with the link to pick a day, if one was sent.
    */
   public Double getCost() {
     return cost;
@@ -101,25 +107,31 @@ public final class Attempt {
     }
 
     /**
-     * Contact channel. `email` needs `customer.email` on the appointment; without it the step is skipped.
+     * Contact channel.
      */
     public Builder channel(String channel) {
       this.channel = channel;
       return this;
     }
 
+    /**
+     * `queued` (not handed over yet), `sent`, `delivered`, `read` (WhatsApp), `answered`, `no_answer` (calls), `failed`, or `transferred` (calls passed to a location's phone).
+     */
     public Builder status(String status) {
       this.status = status;
       return this;
     }
 
+    /**
+     * When it was handed to the provider. `null` while `queued` or when it failed before.
+     */
     public Builder sentAt(String sentAt) {
       this.sentAt = sentAt;
       return this;
     }
 
     /**
-     * Cost of this attempt, in euros.
+     * Cost of this attempt, in euros. `0` for a message refused when sending (refunded). On a call, includes the SMS with the link to pick a day, if one was sent.
      */
     public Builder cost(Double cost) {
       this.cost = cost;

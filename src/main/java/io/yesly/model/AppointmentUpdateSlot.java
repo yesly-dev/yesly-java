@@ -30,7 +30,7 @@ public final class AppointmentUpdateSlot {
   }
 
   /**
-   * New end of the window.
+   * New end of the window. Without it, the new start plus the current length (or the new type's `minutes`, if you change the type).
    */
   public String getEnd() {
     return end;
@@ -60,7 +60,7 @@ public final class AppointmentUpdateSlot {
     }
 
     /**
-     * New end of the window.
+     * New end of the window. Without it, the new start plus the current length (or the new type's `minutes`, if you change the type).
      */
     public Builder end(String end) {
       this.end = end;

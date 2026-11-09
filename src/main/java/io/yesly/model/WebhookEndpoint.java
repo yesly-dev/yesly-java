@@ -91,12 +91,15 @@ public final class WebhookEndpoint {
     return enabledEvents;
   }
 
+  /**
+   * `disabled` by you, or by Yesly after 50 failed deliveries in a row. A disabled endpoint gets no events and its pending retries are dropped.
+   */
   public String getStatus() {
     return status;
   }
 
   /**
-   * Version used to render the events it receives.
+   * Stored as sent (default `2026-10-01`). Events are always rendered with `2026-10-01`.
    */
   public String getApiVersion() {
     return apiVersion;
@@ -195,13 +198,16 @@ public final class WebhookEndpoint {
       return this;
     }
 
+    /**
+     * `disabled` by you, or by Yesly after 50 failed deliveries in a row. A disabled endpoint gets no events and its pending retries are dropped.
+     */
     public Builder status(String status) {
       this.status = status;
       return this;
     }
 
     /**
-     * Version used to render the events it receives.
+     * Stored as sent (default `2026-10-01`). Events are always rendered with `2026-10-01`.
      */
     public Builder apiVersion(String apiVersion) {
       this.apiVersion = apiVersion;

@@ -66,6 +66,9 @@ public final class Balance {
     return lowBalanceThreshold;
   }
 
+  /**
+   * Not available yet. `enabled` is `false` and `below` and `amount` are `null`.
+   */
   public BalanceAutoTopUp getAutoTopUp() {
     return autoTopUp;
   }
@@ -123,6 +126,9 @@ public final class Balance {
       return this;
     }
 
+    /**
+     * Not available yet. `enabled` is `false` and `below` and `amount` are `null`.
+     */
     public Builder autoTopUp(BalanceAutoTopUp autoTopUp) {
       this.autoTopUp = autoTopUp;
       return this;

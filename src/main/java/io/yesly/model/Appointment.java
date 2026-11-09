@@ -108,7 +108,7 @@ public final class Appointment {
   }
 
   /**
-   * - `scheduled`: created, waiting for `first_contact_at`. - `in_progress`: Yesly is contacting the customer. - `confirmed`: the customer will be there. - `rescheduled`: the customer moved it to one of your free slots. - `reschedule_requested`: the customer wants another day and there was no free slot that suited them; `reschedule_request` says which days and when. Set the new `slot` and confirmation starts again. - `cancelled`: cancelled by the customer or by you. - `no_reply`: no answer on any channel. Your team should call.
+   * - `scheduled`: created, waiting for `first_contact_at`. - `in_progress`: Yesly is contacting the customer. Also where contact stopped because the balance did not cover the next message; it is not resumed. - `confirmed`: the customer will be there. - `rescheduled`: the customer moved it to a free time (your published slots or your own system). - `reschedule_requested`: the customer wants another day and did not pick a free time: they proposed days, or asked on the call and did not pick a day from the SMS link. `reschedule_request` says what they would like. Set the new `slot` and confirmation starts again. - `cancelled`: cancelled by the customer or by you. - `no_reply`: no answer on any channel, or the call was transferred. Your team should call.
    */
   public String getStatus() {
     return status;
@@ -192,7 +192,7 @@ public final class Appointment {
   }
 
   /**
-   * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per answered minute; unanswered calls are free.
+   * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per started minute of a call that was picked up; unanswered calls are free. An SMS with the link to pick a day after a call adds 0.15. Messages refused when sending are refunded. In test mode it shows the message prices, but nothing is charged.
    */
   public Double getCost() {
     return cost;
@@ -290,7 +290,7 @@ public final class Appointment {
     }
 
     /**
-     * - `scheduled`: created, waiting for `first_contact_at`. - `in_progress`: Yesly is contacting the customer. - `confirmed`: the customer will be there. - `rescheduled`: the customer moved it to one of your free slots. - `reschedule_requested`: the customer wants another day and there was no free slot that suited them; `reschedule_request` says which days and when. Set the new `slot` and confirmation starts again. - `cancelled`: cancelled by the customer or by you. - `no_reply`: no answer on any channel. Your team should call.
+     * - `scheduled`: created, waiting for `first_contact_at`. - `in_progress`: Yesly is contacting the customer. Also where contact stopped because the balance did not cover the next message; it is not resumed. - `confirmed`: the customer will be there. - `rescheduled`: the customer moved it to a free time (your published slots or your own system). - `reschedule_requested`: the customer wants another day and did not pick a free time: they proposed days, or asked on the call and did not pick a day from the SMS link. `reschedule_request` says what they would like. Set the new `slot` and confirmation starts again. - `cancelled`: cancelled by the customer or by you. - `no_reply`: no answer on any channel, or the call was transferred. Your team should call.
      */
     public Builder status(String status) {
       this.status = status;
@@ -422,7 +422,7 @@ public final class Appointment {
     }
 
     /**
-     * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per answered minute; unanswered calls are free.
+     * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per started minute of a call that was picked up; unanswered calls are free. An SMS with the link to pick a day after a call adds 0.15. Messages refused when sending are refunded. In test mode it shows the message prices, but nothing is charged.
      */
     public Builder cost(Double cost) {
       this.cost = cost;

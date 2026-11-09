@@ -54,6 +54,9 @@ public final class Import {
     return object;
   }
 
+  /**
+   * `processing` until every item is done, then `completed`. The counts and errors are filled in when it completes.
+   */
   public String getStatus() {
     return status;
   }
@@ -66,14 +69,14 @@ public final class Import {
   }
 
   /**
-   * Appointments created so far.
+   * Appointments created.
    */
   public Long getCreated() {
     return created;
   }
 
   /**
-   * Appointments updated so far, because their `external_id` already existed.
+   * Appointments updated, or left as they were, because their `external_id` already existed.
    */
   public Long getUpdated() {
     return updated;
@@ -124,6 +127,9 @@ public final class Import {
       return this;
     }
 
+    /**
+     * `processing` until every item is done, then `completed`. The counts and errors are filled in when it completes.
+     */
     public Builder status(String status) {
       this.status = status;
       return this;
@@ -138,7 +144,7 @@ public final class Import {
     }
 
     /**
-     * Appointments created so far.
+     * Appointments created.
      */
     public Builder created(Long created) {
       this.created = created;
@@ -146,7 +152,7 @@ public final class Import {
     }
 
     /**
-     * Appointments updated so far, because their `external_id` already existed.
+     * Appointments updated, or left as they were, because their `external_id` already existed.
      */
     public Builder updated(Long updated) {
       this.updated = updated;

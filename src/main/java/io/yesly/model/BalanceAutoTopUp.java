@@ -11,6 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Not available yet. `enabled` is `false` and `below` and `amount` are `null`.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class BalanceAutoTopUp {
@@ -29,16 +32,10 @@ public final class BalanceAutoTopUp {
     return enabled;
   }
 
-  /**
-   * Top up when the balance goes below this.
-   */
   public Double getBelow() {
     return below;
   }
 
-  /**
-   * Amount topped up.
-   */
   public Double getAmount() {
     return amount;
   }
@@ -64,17 +61,11 @@ public final class BalanceAutoTopUp {
       return this;
     }
 
-    /**
-     * Top up when the balance goes below this.
-     */
     public Builder below(Double below) {
       this.below = below;
       return this;
     }
 
-    /**
-     * Amount topped up.
-     */
     public Builder amount(Double amount) {
       this.amount = amount;
       return this;

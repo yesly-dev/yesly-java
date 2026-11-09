@@ -56,7 +56,7 @@ public final class BalanceEvent {
   }
 
   /**
-   * Version used to render `data`, that of the endpoint.
+   * Always `2026-10-01`, the only version, whatever the endpoint's `api_version`.
    */
   public String getApiVersion() {
     return apiVersion;
@@ -122,7 +122,7 @@ public final class BalanceEvent {
     }
 
     /**
-     * Version used to render `data`, that of the endpoint.
+     * Always `2026-10-01`, the only version, whatever the endpoint's `api_version`.
      */
     public Builder apiVersion(String apiVersion) {
       this.apiVersion = apiVersion;
