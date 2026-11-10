@@ -23,9 +23,6 @@ public final class AppointmentTypeCreate {
   @JsonProperty("time_format")
   private String timeFormat;
 
-  @JsonProperty("minutes")
-  private Long minutes;
-
   @JsonProperty("place")
   private String place;
 
@@ -34,6 +31,9 @@ public final class AppointmentTypeCreate {
 
   @JsonProperty("reschedulable")
   private Boolean reschedulable;
+
+  @JsonProperty("reschedule")
+  private RescheduleWindow reschedule;
 
   @JsonProperty("cancellable")
   private Boolean cancellable;
@@ -65,13 +65,6 @@ public final class AppointmentTypeCreate {
   }
 
   /**
-   * Window length or duration.
-   */
-  public Long getMinutes() {
-    return minutes;
-  }
-
-  /**
    * `customer` (at the customer's address) or `location` (at one of your locations).
    */
   public String getPlace() {
@@ -89,12 +82,19 @@ public final class AppointmentTypeCreate {
     return reschedulable;
   }
 
+  /**
+   * Where the customer may move it to. Default: 24 hours to 14 days from when they ask.
+   */
+  public RescheduleWindow getReschedule() {
+    return reschedule;
+  }
+
   public Boolean getCancellable() {
     return cancellable;
   }
 
   /**
-   * Its own first message. Leave it out (or `null`) to use your account's setting.
+   * When the first message goes out. Default: the day before at 10:00.
    */
   public FirstContact getFirstContact() {
     return firstContact;
@@ -113,10 +113,10 @@ public final class AppointmentTypeCreate {
     private String id;
     private String name;
     private String timeFormat;
-    private Long minutes;
     private String place;
     private String instructions;
     private Boolean reschedulable;
+    private RescheduleWindow reschedule;
     private Boolean cancellable;
     private FirstContact firstContact;
 
@@ -147,14 +147,6 @@ public final class AppointmentTypeCreate {
     }
 
     /**
-     * Window length or duration.
-     */
-    public Builder minutes(Long minutes) {
-      this.minutes = minutes;
-      return this;
-    }
-
-    /**
      * `customer` (at the customer's address) or `location` (at one of your locations).
      */
     public Builder place(String place) {
@@ -175,13 +167,25 @@ public final class AppointmentTypeCreate {
       return this;
     }
 
+    /**
+     * Where the customer may move it to. Default: 24 hours to 14 days from when they ask.
+     */
+    public Builder reschedule(RescheduleWindow reschedule) {
+      this.reschedule = reschedule;
+      return this;
+    }
+
+    public Builder reschedule(Long minNoticeHours, Long windowDays) {
+      return reschedule(RescheduleWindow.builder().minNoticeHours(minNoticeHours).windowDays(windowDays).build());
+    }
+
     public Builder cancellable(Boolean cancellable) {
       this.cancellable = cancellable;
       return this;
     }
 
     /**
-     * Its own first message. Leave it out (or `null`) to use your account's setting.
+     * When the first message goes out. Default: the day before at 10:00.
      */
     public Builder firstContact(FirstContact firstContact) {
       this.firstContact = firstContact;
@@ -197,10 +201,10 @@ public final class AppointmentTypeCreate {
       o.id = id;
       o.name = name;
       o.timeFormat = timeFormat;
-      o.minutes = minutes;
       o.place = place;
       o.instructions = instructions;
       o.reschedulable = reschedulable;
+      o.reschedule = reschedule;
       o.cancellable = cancellable;
       o.firstContact = firstContact;
       return o;

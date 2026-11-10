@@ -129,7 +129,7 @@ public final class Appointment {
   }
 
   /**
-   * `start` and `end` of the appointment. For exact-time types, `end` is `start` plus the type's duration.
+   * `start` and `end` of the appointment. For exact-time types without an end, `end` is `start`.
    */
   public AppointmentSlot getSlot() {
     return slot;
@@ -192,7 +192,7 @@ public final class Appointment {
   }
 
   /**
-   * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per started minute of a call that was picked up; unanswered calls are free. An SMS with the link to pick a day after a call adds 0.15. Messages refused when sending are refunded. In test mode it shows the message prices, but nothing is charged.
+   * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per started minute of a call that was picked up; unanswered calls are free, and so are voicemails. The link to pick a day after a call adds a WhatsApp (0.08) or, when WhatsApp cannot be used, an SMS (0.15). Messages refused when sending are refunded. In test mode it shows the message prices, but nothing is charged.
    */
   public Double getCost() {
     return cost;
@@ -314,7 +314,7 @@ public final class Appointment {
     }
 
     /**
-     * `start` and `end` of the appointment. For exact-time types, `end` is `start` plus the type's duration.
+     * `start` and `end` of the appointment. For exact-time types without an end, `end` is `start`.
      */
     public Builder slot(AppointmentSlot slot) {
       this.slot = slot;
@@ -422,7 +422,7 @@ public final class Appointment {
     }
 
     /**
-     * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per started minute of a call that was picked up; unanswered calls are free. An SMS with the link to pick a day after a call adds 0.15. Messages refused when sending are refunded. In test mode it shows the message prices, but nothing is charged.
+     * What this appointment has cost so far, in euros. WhatsApp 0.08 per message, SMS 0.15 per message, email 0.01 per message, voice 0.30 per started minute of a call that was picked up; unanswered calls are free, and so are voicemails. The link to pick a day after a call adds a WhatsApp (0.08) or, when WhatsApp cannot be used, an SMS (0.15). Messages refused when sending are refunded. In test mode it shows the message prices, but nothing is charged.
      */
     public Builder cost(Double cost) {
       this.cost = cost;

@@ -17,7 +17,7 @@ public final class BalanceService {
   /**
    * Retrieve the balance.
    *
-   * Yesly is prepaid. Each WhatsApp message, SMS, email and started minute of a call that was picked up is taken from the balance at the public price; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. When a customer asks for another day on a call, the SMS with the link to pick a day is charged as an SMS. Top-ups are made by card in the dashboard and cannot be made through the API.
+   * Yesly is prepaid. Each WhatsApp message, SMS, email and started minute of a call that was picked up is taken from the balance at the public price; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. When a customer asks for another day on a call, the link to pick a day goes by WhatsApp (or by SMS when WhatsApp cannot be used) and is charged as a message of that channel. Top-ups are made by card in the dashboard and cannot be made through the API.
    *
    * <code>GET /balance</code>
    */
@@ -28,7 +28,7 @@ public final class BalanceService {
   /**
    * Retrieve the balance.
    *
-   * Yesly is prepaid. Each WhatsApp message, SMS, email and started minute of a call that was picked up is taken from the balance at the public price; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. When a customer asks for another day on a call, the SMS with the link to pick a day is charged as an SMS. Top-ups are made by card in the dashboard and cannot be made through the API.
+   * Yesly is prepaid. Each WhatsApp message, SMS, email and started minute of a call that was picked up is taken from the balance at the public price; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. When a customer asks for another day on a call, the link to pick a day goes by WhatsApp (or by SMS when WhatsApp cannot be used) and is charged as a message of that channel. Top-ups are made by card in the dashboard and cannot be made through the API.
    *
    * <code>GET /balance</code>
    */

@@ -70,6 +70,39 @@ public final class AppointmentsService {
   }
 
   /**
+   * Count appointments by status.
+   *
+   * How many appointments List appointments would return for each status, with the same filters (all of them but `status`, `limit` and `starting_after`). Without `date`, `from` or `to` it counts every appointment the account still keeps. Counts with whole days (`date`, or `from` and `to` as dates) or no dates, by type and location, come from counters kept as appointments change, a few seconds behind.
+   *
+   * <code>GET /appointments/counts</code>
+   */
+  public AppointmentCounts count(AppointmentCountParams params, RequestOptions options) {
+    return client.request("GET", "/appointments/counts", params, null, false, options, AppointmentCounts.class);
+  }
+
+  /**
+   * Count appointments by status.
+   *
+   * How many appointments List appointments would return for each status, with the same filters (all of them but `status`, `limit` and `starting_after`). Without `date`, `from` or `to` it counts every appointment the account still keeps. Counts with whole days (`date`, or `from` and `to` as dates) or no dates, by type and location, come from counters kept as appointments change, a few seconds behind.
+   *
+   * <code>GET /appointments/counts</code>
+   */
+  public AppointmentCounts count(AppointmentCountParams params) {
+    return count(params, null);
+  }
+
+  /**
+   * Count appointments by status.
+   *
+   * How many appointments List appointments would return for each status, with the same filters (all of them but `status`, `limit` and `starting_after`). Without `date`, `from` or `to` it counts every appointment the account still keeps. Counts with whole days (`date`, or `from` and `to` as dates) or no dates, by type and location, come from counters kept as appointments change, a few seconds behind.
+   *
+   * <code>GET /appointments/counts</code>
+   */
+  public AppointmentCounts count() {
+    return count(null, null);
+  }
+
+  /**
    * Retrieve an appointment.
    *
    * Fetches an appointment with its attempts and answer. To find one by your own id, list with `external_id`.
@@ -144,6 +177,28 @@ public final class AppointmentsService {
    */
   public Appointment cancel(String id) {
     return cancel(id, null, null);
+  }
+
+  /**
+   * Get a call recording.
+   *
+   * A link to the audio of a conversational call (attempts with `has_recording` `true`): a WAV file, customer on the left channel and Yesly's agent on the right. The link works for 15 minutes; ask again for a new one. Recordings are kept as long as the account's retention allows and stored in the EU. Every link is logged (who and when, a member or an API key by name); owners and admins see the log in the dashboard. Needs a key with full access: a read-only key gets `403` `api_key_scope`.
+   *
+   * <code>GET /appointments/{id}/attempts/{attempt}/recording</code>
+   */
+  public Recording recording(String id, String attempt, RequestOptions options) {
+    return client.request("GET", "/appointments/" + Client.encode(id) + "/attempts/" + Client.encode(attempt) + "/recording", null, null, false, options, Recording.class);
+  }
+
+  /**
+   * Get a call recording.
+   *
+   * A link to the audio of a conversational call (attempts with `has_recording` `true`): a WAV file, customer on the left channel and Yesly's agent on the right. The link works for 15 minutes; ask again for a new one. Recordings are kept as long as the account's retention allows and stored in the EU. Every link is logged (who and when, a member or an API key by name); owners and admins see the log in the dashboard. Needs a key with full access: a read-only key gets `403` `api_key_scope`.
+   *
+   * <code>GET /appointments/{id}/attempts/{attempt}/recording</code>
+   */
+  public Recording recording(String id, String attempt) {
+    return recording(id, attempt, null);
   }
 
   /**

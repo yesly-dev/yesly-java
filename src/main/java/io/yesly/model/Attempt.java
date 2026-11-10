@@ -35,6 +35,12 @@ public final class Attempt {
   @JsonProperty("transcript")
   private List<TranscriptLine> transcript;
 
+  @JsonProperty("has_recording")
+  private Boolean hasRecording;
+
+  @JsonProperty("answer_verified")
+  private Boolean answerVerified;
+
   private Attempt() {}
 
   /**
@@ -66,17 +72,31 @@ public final class Attempt {
   }
 
   /**
-   * Cost of this attempt, in euros. `0` for a message refused when sending (refunded). On a call, includes the SMS with the link to pick a day, if one was sent.
+   * Cost of this attempt, in euros. `0` for a message refused when sending (refunded). On a call, includes the WhatsApp or SMS with the link to pick a day, if one was sent; a call that reached a voicemail is free.
    */
   public Double getCost() {
     return cost;
   }
 
   /**
-   * Calls only: what the call said and what it heard, in order. A customer turn has the recognised speech in `text` (empty for a silence) or the key pressed in `key`. Kept with the appointment and deleted with it.
+   * Calls only, and only when you get one appointment (lists leave it out): what the call said and what it heard, in order. A customer turn has the recognised speech in `text` (empty for a silence) or the key pressed in `key`. Kept with the appointment and deleted with it.
    */
   public List<TranscriptLine> getTranscript() {
     return transcript;
+  }
+
+  /**
+   * Calls only. `true` when the call's audio was recorded; get it with `GET /appointments/{id}/attempts/{attempt}/recording`.
+   */
+  public Boolean getHasRecording() {
+    return hasRecording;
+  }
+
+  /**
+   * Calls only. `true` when Yesly's agent read the answer back (the date to confirm, the new slot or the cancellation) and the customer said yes again before it was recorded.
+   */
+  public Boolean getAnswerVerified() {
+    return answerVerified;
   }
 
   public static Builder builder() {
@@ -95,6 +115,8 @@ public final class Attempt {
     private String sentAt;
     private Double cost;
     private List<TranscriptLine> transcript;
+    private Boolean hasRecording;
+    private Boolean answerVerified;
 
     private Builder() {}
 
@@ -131,7 +153,7 @@ public final class Attempt {
     }
 
     /**
-     * Cost of this attempt, in euros. `0` for a message refused when sending (refunded). On a call, includes the SMS with the link to pick a day, if one was sent.
+     * Cost of this attempt, in euros. `0` for a message refused when sending (refunded). On a call, includes the WhatsApp or SMS with the link to pick a day, if one was sent; a call that reached a voicemail is free.
      */
     public Builder cost(Double cost) {
       this.cost = cost;
@@ -139,10 +161,26 @@ public final class Attempt {
     }
 
     /**
-     * Calls only: what the call said and what it heard, in order. A customer turn has the recognised speech in `text` (empty for a silence) or the key pressed in `key`. Kept with the appointment and deleted with it.
+     * Calls only, and only when you get one appointment (lists leave it out): what the call said and what it heard, in order. A customer turn has the recognised speech in `text` (empty for a silence) or the key pressed in `key`. Kept with the appointment and deleted with it.
      */
     public Builder transcript(List<TranscriptLine> transcript) {
       this.transcript = transcript;
+      return this;
+    }
+
+    /**
+     * Calls only. `true` when the call's audio was recorded; get it with `GET /appointments/{id}/attempts/{attempt}/recording`.
+     */
+    public Builder hasRecording(Boolean hasRecording) {
+      this.hasRecording = hasRecording;
+      return this;
+    }
+
+    /**
+     * Calls only. `true` when Yesly's agent read the answer back (the date to confirm, the new slot or the cancellation) and the customer said yes again before it was recorded.
+     */
+    public Builder answerVerified(Boolean answerVerified) {
+      this.answerVerified = answerVerified;
       return this;
     }
 
@@ -154,6 +192,8 @@ public final class Attempt {
       o.sentAt = sentAt;
       o.cost = cost;
       o.transcript = transcript;
+      o.hasRecording = hasRecording;
+      o.answerVerified = answerVerified;
       return o;
     }
   }

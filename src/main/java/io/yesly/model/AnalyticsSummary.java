@@ -41,6 +41,9 @@ public final class AnalyticsSummary {
   @JsonProperty("median_minutes_to_answer")
   private Long medianMinutesToAnswer;
 
+  @JsonProperty("agent_calls")
+  private AnalyticsSummaryAgentCalls agentCalls;
+
   @JsonProperty("usage")
   private AnalyticsSummaryUsage usage;
 
@@ -94,6 +97,13 @@ public final class AnalyticsSummary {
   }
 
   /**
+   * Calls answered by Yesly's conversational agent in the range.
+   */
+  public AnalyticsSummaryAgentCalls getAgentCalls() {
+    return agentCalls;
+  }
+
+  /**
    * Messages sent (not failed) and started call minutes.
    */
   public AnalyticsSummaryUsage getUsage() {
@@ -132,6 +142,7 @@ public final class AnalyticsSummary {
     private AnalyticsSummaryOutcomes outcomes;
     private AnalyticsSummaryAnsweredBy answeredBy;
     private Long medianMinutesToAnswer;
+    private AnalyticsSummaryAgentCalls agentCalls;
     private AnalyticsSummaryUsage usage;
     private AnalyticsSummarySpend spend;
     private List<AnalyticsSummaryDaysItem> days;
@@ -192,6 +203,18 @@ public final class AnalyticsSummary {
     }
 
     /**
+     * Calls answered by Yesly's conversational agent in the range.
+     */
+    public Builder agentCalls(AnalyticsSummaryAgentCalls agentCalls) {
+      this.agentCalls = agentCalls;
+      return this;
+    }
+
+    public Builder agentCalls(Long calls, Long resolved, Long verified) {
+      return agentCalls(AnalyticsSummaryAgentCalls.builder().calls(calls).resolved(resolved).verified(verified).build());
+    }
+
+    /**
      * Messages sent (not failed) and started call minutes.
      */
     public Builder usage(AnalyticsSummaryUsage usage) {
@@ -239,6 +262,7 @@ public final class AnalyticsSummary {
       o.outcomes = outcomes;
       o.answeredBy = answeredBy;
       o.medianMinutesToAnswer = medianMinutesToAnswer;
+      o.agentCalls = agentCalls;
       o.usage = usage;
       o.spend = spend;
       o.days = days;

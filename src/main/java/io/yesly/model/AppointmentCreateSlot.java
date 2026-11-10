@@ -30,7 +30,7 @@ public final class AppointmentCreateSlot {
   }
 
   /**
-   * End of the window, after `start`. Without it, `start` plus the type's `minutes` (60 if the account has no types).
+   * End of the window, after `start`. Required unless the type is `exact` (then it may be left out, and `end` is `start`).
    */
   public String getEnd() {
     return end;
@@ -60,7 +60,7 @@ public final class AppointmentCreateSlot {
     }
 
     /**
-     * End of the window, after `start`. Without it, `start` plus the type's `minutes` (60 if the account has no types).
+     * End of the window, after `start`. Required unless the type is `exact` (then it may be left out, and `end` is `start`).
      */
     public Builder end(String end) {
       this.end = end;

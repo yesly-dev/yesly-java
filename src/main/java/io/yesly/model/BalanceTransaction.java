@@ -64,7 +64,7 @@ public final class BalanceTransaction {
   }
 
   /**
-   * `usage` (a charge), `top_up` (a card top-up) or `adjustment` (money given back, such as a refund for a message refused when sending).
+   * `usage` (a charge), `top_up` (a card top-up) or `adjustment` (money given back, such as a refund for a message refused when sending, or taken back, negative, when a card top-up is refunded or disputed).
    */
   public String getType() {
     return type;
@@ -161,7 +161,7 @@ public final class BalanceTransaction {
     }
 
     /**
-     * `usage` (a charge), `top_up` (a card top-up) or `adjustment` (money given back, such as a refund for a message refused when sending).
+     * `usage` (a charge), `top_up` (a card top-up) or `adjustment` (money given back, such as a refund for a message refused when sending, or taken back, negative, when a card top-up is refunded or disputed).
      */
     public Builder type(String type) {
       this.type = type;

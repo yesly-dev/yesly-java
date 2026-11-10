@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * `start` and `end` of the appointment. For exact-time types, `end` is `start` plus the type's duration.
+ * `start` and `end` of the appointment. For exact-time types without an end, `end` is `start`.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -20,14 +20,14 @@ public final class AppointmentTypeUpdateParams {
   @JsonProperty("name")
   private String name;
 
-  @JsonProperty("minutes")
-  private Long minutes;
-
   @JsonProperty("instructions")
   private String instructions;
 
   @JsonProperty("reschedulable")
   private Boolean reschedulable;
+
+  @JsonProperty("reschedule")
+  private RescheduleWindow reschedule;
 
   @JsonProperty("cancellable")
   private Boolean cancellable;
@@ -45,13 +45,6 @@ public final class AppointmentTypeUpdateParams {
   }
 
   /**
-   * New window length or duration.
-   */
-  public Long getMinutes() {
-    return minutes;
-  }
-
-  /**
    * New instructions. An empty string clears them.
    */
   public String getInstructions() {
@@ -66,6 +59,13 @@ public final class AppointmentTypeUpdateParams {
   }
 
   /**
+   * Where a customer may move the appointment to, counted from when they ask. Applies when `reschedulable` is true.
+   */
+  public RescheduleWindow getReschedule() {
+    return reschedule;
+  }
+
+  /**
    * Whether the customer may cancel.
    */
   public Boolean getCancellable() {
@@ -73,7 +73,7 @@ public final class AppointmentTypeUpdateParams {
   }
 
   /**
-   * Its own first message; `null` goes back to your account's setting.
+   * When the first message goes out for appointments of a type: `days_before` and `at` ("the day before at 10:00", `0` for the same day), or `hours_before` (same-day services: "3 hours before"). Moved into your contact hours when it falls outside them.
    */
   public FirstContact getFirstContact() {
     return firstContact;
@@ -90,9 +90,9 @@ public final class AppointmentTypeUpdateParams {
 
   public static final class Builder {
     private String name;
-    private Long minutes;
     private String instructions;
     private Boolean reschedulable;
+    private RescheduleWindow reschedule;
     private Boolean cancellable;
     private FirstContact firstContact;
 
@@ -103,14 +103,6 @@ public final class AppointmentTypeUpdateParams {
      */
     public Builder name(String name) {
       this.name = name;
-      return this;
-    }
-
-    /**
-     * New window length or duration.
-     */
-    public Builder minutes(Long minutes) {
-      this.minutes = minutes;
       return this;
     }
 
@@ -131,6 +123,18 @@ public final class AppointmentTypeUpdateParams {
     }
 
     /**
+     * Where a customer may move the appointment to, counted from when they ask. Applies when `reschedulable` is true.
+     */
+    public Builder reschedule(RescheduleWindow reschedule) {
+      this.reschedule = reschedule;
+      return this;
+    }
+
+    public Builder reschedule(Long minNoticeHours, Long windowDays) {
+      return reschedule(RescheduleWindow.builder().minNoticeHours(minNoticeHours).windowDays(windowDays).build());
+    }
+
+    /**
      * Whether the customer may cancel.
      */
     public Builder cancellable(Boolean cancellable) {
@@ -139,7 +143,7 @@ public final class AppointmentTypeUpdateParams {
     }
 
     /**
-     * Its own first message; `null` goes back to your account's setting.
+     * When the first message goes out for appointments of a type: `days_before` and `at` ("the day before at 10:00", `0` for the same day), or `hours_before` (same-day services: "3 hours before"). Moved into your contact hours when it falls outside them.
      */
     public Builder firstContact(FirstContact firstContact) {
       this.firstContact = firstContact;
@@ -153,9 +157,9 @@ public final class AppointmentTypeUpdateParams {
     public AppointmentTypeUpdateParams build() {
       AppointmentTypeUpdateParams o = new AppointmentTypeUpdateParams();
       o.name = name;
-      o.minutes = minutes;
       o.instructions = instructions;
       o.reschedulable = reschedulable;
+      o.reschedule = reschedule;
       o.cancellable = cancellable;
       o.firstContact = firstContact;
       return o;

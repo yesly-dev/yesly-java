@@ -29,9 +29,6 @@ public final class AppointmentType {
   @JsonProperty("time_format")
   private String timeFormat;
 
-  @JsonProperty("minutes")
-  private Long minutes;
-
   @JsonProperty("place")
   private String place;
 
@@ -40,6 +37,9 @@ public final class AppointmentType {
 
   @JsonProperty("reschedulable")
   private Boolean reschedulable;
+
+  @JsonProperty("reschedule")
+  private RescheduleWindow reschedule;
 
   @JsonProperty("cancellable")
   private Boolean cancellable;
@@ -78,13 +78,6 @@ public final class AppointmentType {
   }
 
   /**
-   * Length of the window or duration of the appointment.
-   */
-  public Long getMinutes() {
-    return minutes;
-  }
-
-  /**
    * `customer` (at the customer's address) or `location` (at one of your locations).
    */
   public String getPlace() {
@@ -106,6 +99,13 @@ public final class AppointmentType {
   }
 
   /**
+   * Where a customer may move the appointment to, counted from when they ask. Applies when `reschedulable` is true.
+   */
+  public RescheduleWindow getReschedule() {
+    return reschedule;
+  }
+
+  /**
    * Whether the customer may cancel. Off for deliveries such as a parcel or a mattress; messages then do not offer it, and on a call a "no" is taken as a request for another day (if `reschedulable`).
    */
   public Boolean getCancellable() {
@@ -113,7 +113,7 @@ public final class AppointmentType {
   }
 
   /**
-   * When the first message goes out for this type, or `null` to use your account's setting.
+   * When the first message goes out for appointments of a type: `days_before` and `at` ("the day before at 10:00", `0` for the same day), or `hours_before` (same-day services: "3 hours before"). Moved into your contact hours when it falls outside them.
    */
   public FirstContact getFirstContact() {
     return firstContact;
@@ -137,10 +137,10 @@ public final class AppointmentType {
     private String object;
     private String name;
     private String timeFormat;
-    private Long minutes;
     private String place;
     private String instructions;
     private Boolean reschedulable;
+    private RescheduleWindow reschedule;
     private Boolean cancellable;
     private FirstContact firstContact;
     private String created;
@@ -177,14 +177,6 @@ public final class AppointmentType {
     }
 
     /**
-     * Length of the window or duration of the appointment.
-     */
-    public Builder minutes(Long minutes) {
-      this.minutes = minutes;
-      return this;
-    }
-
-    /**
      * `customer` (at the customer's address) or `location` (at one of your locations).
      */
     public Builder place(String place) {
@@ -209,6 +201,18 @@ public final class AppointmentType {
     }
 
     /**
+     * Where a customer may move the appointment to, counted from when they ask. Applies when `reschedulable` is true.
+     */
+    public Builder reschedule(RescheduleWindow reschedule) {
+      this.reschedule = reschedule;
+      return this;
+    }
+
+    public Builder reschedule(Long minNoticeHours, Long windowDays) {
+      return reschedule(RescheduleWindow.builder().minNoticeHours(minNoticeHours).windowDays(windowDays).build());
+    }
+
+    /**
      * Whether the customer may cancel. Off for deliveries such as a parcel or a mattress; messages then do not offer it, and on a call a "no" is taken as a request for another day (if `reschedulable`).
      */
     public Builder cancellable(Boolean cancellable) {
@@ -217,7 +221,7 @@ public final class AppointmentType {
     }
 
     /**
-     * When the first message goes out for this type, or `null` to use your account's setting.
+     * When the first message goes out for appointments of a type: `days_before` and `at` ("the day before at 10:00", `0` for the same day), or `hours_before` (same-day services: "3 hours before"). Moved into your contact hours when it falls outside them.
      */
     public Builder firstContact(FirstContact firstContact) {
       this.firstContact = firstContact;
@@ -239,10 +243,10 @@ public final class AppointmentType {
       o.object = object;
       o.name = name;
       o.timeFormat = timeFormat;
-      o.minutes = minutes;
       o.place = place;
       o.instructions = instructions;
       o.reschedulable = reschedulable;
+      o.reschedule = reschedule;
       o.cancellable = cancellable;
       o.firstContact = firstContact;
       o.created = created;
