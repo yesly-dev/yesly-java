@@ -93,7 +93,7 @@ public final class Call {
   }
 
   /**
-   * Only on `call.completed`. `answered` when the customer gave an answer on the call, otherwise `no_answer`.
+   * Only on `call.completed`. `answered` when the customer gave an answer on the call, `unresolved` when they picked up but gave none, `voicemail` when a voicemail picked up, `no_answer` when nobody did.
    */
   public String getOutcome() {
     return outcome;
@@ -186,7 +186,7 @@ public final class Call {
     }
 
     /**
-     * Only on `call.completed`. `answered` when the customer gave an answer on the call, otherwise `no_answer`.
+     * Only on `call.completed`. `answered` when the customer gave an answer on the call, `unresolved` when they picked up but gave none, `voicemail` when a voicemail picked up, `no_answer` when nobody did.
      */
     public Builder outcome(String outcome) {
       this.outcome = outcome;

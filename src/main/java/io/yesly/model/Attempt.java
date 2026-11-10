@@ -58,7 +58,7 @@ public final class Attempt {
   }
 
   /**
-   * `queued` (not handed over yet), `sent`, `delivered`, `read` (WhatsApp), `answered`, `no_answer` (calls), `failed`, or `transferred` (calls passed to a location's phone).
+   * `queued` (not handed over yet), `sent`, `delivered`, `read` (WhatsApp), `answered`, `no_answer` (calls the customer did not pick up), `voicemail` (calls a voicemail picked up: hung up without leaving a message, free), `unresolved` (calls picked up that ended without an answer), `failed`, or `transferred` (calls passed to a location's phone).
    */
   public String getStatus() {
     return status;
@@ -137,7 +137,7 @@ public final class Attempt {
     }
 
     /**
-     * `queued` (not handed over yet), `sent`, `delivered`, `read` (WhatsApp), `answered`, `no_answer` (calls), `failed`, or `transferred` (calls passed to a location's phone).
+     * `queued` (not handed over yet), `sent`, `delivered`, `read` (WhatsApp), `answered`, `no_answer` (calls the customer did not pick up), `voicemail` (calls a voicemail picked up: hung up without leaving a message, free), `unresolved` (calls picked up that ended without an answer), `failed`, or `transferred` (calls passed to a location's phone).
      */
     public Builder status(String status) {
       this.status = status;
