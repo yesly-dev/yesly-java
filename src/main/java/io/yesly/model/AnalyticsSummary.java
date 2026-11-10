@@ -20,6 +20,9 @@ public final class AnalyticsSummary {
   @JsonProperty("object")
   private String object;
 
+  @JsonProperty("use_case")
+  private String useCase;
+
   @JsonProperty("range")
   private String range;
 
@@ -57,6 +60,13 @@ public final class AnalyticsSummary {
 
   public String getObject() {
     return object;
+  }
+
+  /**
+   * A use case Yesly contacts customers for. Today only `appointments`; more values will be added.
+   */
+  public String getUseCase() {
+    return useCase;
   }
 
   public String getRange() {
@@ -135,6 +145,7 @@ public final class AnalyticsSummary {
 
   public static final class Builder {
     private String object;
+    private String useCase;
     private String range;
     private String from;
     private String to;
@@ -151,6 +162,14 @@ public final class AnalyticsSummary {
 
     public Builder object(String object) {
       this.object = object;
+      return this;
+    }
+
+    /**
+     * A use case Yesly contacts customers for. Today only `appointments`; more values will be added.
+     */
+    public Builder useCase(String useCase) {
+      this.useCase = useCase;
       return this;
     }
 
@@ -255,6 +274,7 @@ public final class AnalyticsSummary {
     public AnalyticsSummary build() {
       AnalyticsSummary o = new AnalyticsSummary();
       o.object = object;
+      o.useCase = useCase;
       o.range = range;
       o.from = from;
       o.to = to;

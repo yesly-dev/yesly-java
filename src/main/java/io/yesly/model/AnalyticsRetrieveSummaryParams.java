@@ -17,6 +17,9 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class AnalyticsRetrieveSummaryParams {
+  @JsonProperty("use_case")
+  private String useCase;
+
   @JsonProperty("range")
   private String range;
 
@@ -27,6 +30,13 @@ public final class AnalyticsRetrieveSummaryParams {
   private String location;
 
   private AnalyticsRetrieveSummaryParams() {}
+
+  /**
+   * The use case whose figures you want. Each use case has its own; today only `appointments`.
+   */
+  public String getUseCase() {
+    return useCase;
+  }
 
   /**
    * Days covered, ending today.
@@ -59,11 +69,20 @@ public final class AnalyticsRetrieveSummaryParams {
   }
 
   public static final class Builder {
+    private String useCase;
     private String range;
     private String type;
     private String location;
 
     private Builder() {}
+
+    /**
+     * The use case whose figures you want. Each use case has its own; today only `appointments`.
+     */
+    public Builder useCase(String useCase) {
+      this.useCase = useCase;
+      return this;
+    }
 
     /**
      * Days covered, ending today.
@@ -91,6 +110,7 @@ public final class AnalyticsRetrieveSummaryParams {
 
     public AnalyticsRetrieveSummaryParams build() {
       AnalyticsRetrieveSummaryParams o = new AnalyticsRetrieveSummaryParams();
+      o.useCase = useCase;
       o.range = range;
       o.type = type;
       o.location = location;

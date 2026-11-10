@@ -85,7 +85,7 @@ public final class WebhookEndpoint {
   }
 
   /**
-   * Event types sent to the endpoint. `["*"]` for all.
+   * Event types sent to the endpoint. `["*"]` for all; a family such as `appointment.*` for every event of one object, including types added later.
    */
   public List<String> getEnabledEvents() {
     return enabledEvents;
@@ -185,7 +185,7 @@ public final class WebhookEndpoint {
     }
 
     /**
-     * Event types sent to the endpoint. `["*"]` for all.
+     * Event types sent to the endpoint. `["*"]` for all; a family such as `appointment.*` for every event of one object, including types added later.
      */
     public Builder enabledEvents(List<String> enabledEvents) {
       this.enabledEvents = enabledEvents;
