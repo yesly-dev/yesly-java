@@ -20,12 +20,6 @@ public final class BalanceListTransactionsParams {
   @JsonProperty("type")
   private String type;
 
-  @JsonProperty("use_case")
-  private String useCase;
-
-  @JsonProperty("subject")
-  private String subject;
-
   @JsonProperty("appointment")
   private String appointment;
 
@@ -51,21 +45,7 @@ public final class BalanceListTransactionsParams {
   }
 
   /**
-   * Only charges of this use case. Top-ups and adjustments belong to the account and are left out.
-   */
-  public String getUseCase() {
-    return useCase;
-  }
-
-  /**
-   * Only charges for this object, by its id (today an appointment, `apt_…`).
-   */
-  public String getSubject() {
-    return subject;
-  }
-
-  /**
-   * Only charges for this appointment. Same as `subject` with an appointment id.
+   * Only charges for this appointment.
    */
   public String getAppointment() {
     return appointment;
@@ -110,8 +90,6 @@ public final class BalanceListTransactionsParams {
 
   public static final class Builder {
     private String type;
-    private String useCase;
-    private String subject;
     private String appointment;
     private String from;
     private String to;
@@ -129,23 +107,7 @@ public final class BalanceListTransactionsParams {
     }
 
     /**
-     * Only charges of this use case. Top-ups and adjustments belong to the account and are left out.
-     */
-    public Builder useCase(String useCase) {
-      this.useCase = useCase;
-      return this;
-    }
-
-    /**
-     * Only charges for this object, by its id (today an appointment, `apt_…`).
-     */
-    public Builder subject(String subject) {
-      this.subject = subject;
-      return this;
-    }
-
-    /**
-     * Only charges for this appointment. Same as `subject` with an appointment id.
+     * Only charges for this appointment.
      */
     public Builder appointment(String appointment) {
       this.appointment = appointment;
@@ -187,8 +149,6 @@ public final class BalanceListTransactionsParams {
     public BalanceListTransactionsParams build() {
       BalanceListTransactionsParams o = new BalanceListTransactionsParams();
       o.type = type;
-      o.useCase = useCase;
-      o.subject = subject;
       o.appointment = appointment;
       o.from = from;
       o.to = to;

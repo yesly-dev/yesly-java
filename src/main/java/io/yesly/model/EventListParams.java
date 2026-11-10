@@ -20,12 +20,6 @@ public final class EventListParams {
   @JsonProperty("type")
   private String type;
 
-  @JsonProperty("use_case")
-  private String useCase;
-
-  @JsonProperty("subject")
-  private String subject;
-
   @JsonProperty("appointment")
   private String appointment;
 
@@ -48,21 +42,7 @@ public final class EventListParams {
   }
 
   /**
-   * Only events of this use case. Leaves out the account's own `balance.*` events.
-   */
-  public String getUseCase() {
-    return useCase;
-  }
-
-  /**
-   * Only events about this object, by its id (today an appointment, `apt_…`).
-   */
-  public String getSubject() {
-    return subject;
-  }
-
-  /**
-   * Only events about this appointment. Same as `subject` with an appointment id.
+   * Only events about this appointment.
    */
   public String getAppointment() {
     return appointment;
@@ -100,8 +80,6 @@ public final class EventListParams {
 
   public static final class Builder {
     private String type;
-    private String useCase;
-    private String subject;
     private String appointment;
     private String from;
     private Long limit;
@@ -118,23 +96,7 @@ public final class EventListParams {
     }
 
     /**
-     * Only events of this use case. Leaves out the account's own `balance.*` events.
-     */
-    public Builder useCase(String useCase) {
-      this.useCase = useCase;
-      return this;
-    }
-
-    /**
-     * Only events about this object, by its id (today an appointment, `apt_…`).
-     */
-    public Builder subject(String subject) {
-      this.subject = subject;
-      return this;
-    }
-
-    /**
-     * Only events about this appointment. Same as `subject` with an appointment id.
+     * Only events about this appointment.
      */
     public Builder appointment(String appointment) {
       this.appointment = appointment;
@@ -168,8 +130,6 @@ public final class EventListParams {
     public EventListParams build() {
       EventListParams o = new EventListParams();
       o.type = type;
-      o.useCase = useCase;
-      o.subject = subject;
       o.appointment = appointment;
       o.from = from;
       o.limit = limit;

@@ -26,12 +26,6 @@ public final class AppointmentEvent {
   @JsonProperty("type")
   private String type;
 
-  @JsonProperty("use_case")
-  private String useCase;
-
-  @JsonProperty("subject")
-  private Subject subject;
-
   @JsonProperty("api_version")
   private String apiVersion;
 
@@ -59,20 +53,6 @@ public final class AppointmentEvent {
 
   public String getType() {
     return type;
-  }
-
-  /**
-   * The use case the event belongs to; `null` for the account's own `balance.*` events.
-   */
-  public String getUseCase() {
-    return useCase;
-  }
-
-  /**
-   * What the event is about (the appointment, also for `message.*` and `call.*`); `null` for `balance.*` events.
-   */
-  public Subject getSubject() {
-    return subject;
   }
 
   /**
@@ -116,8 +96,6 @@ public final class AppointmentEvent {
     private String id;
     private String object;
     private String type;
-    private String useCase;
-    private Subject subject;
     private String apiVersion;
     private String mode;
     private String created;
@@ -141,26 +119,6 @@ public final class AppointmentEvent {
     public Builder type(String type) {
       this.type = type;
       return this;
-    }
-
-    /**
-     * The use case the event belongs to; `null` for the account's own `balance.*` events.
-     */
-    public Builder useCase(String useCase) {
-      this.useCase = useCase;
-      return this;
-    }
-
-    /**
-     * What the event is about (the appointment, also for `message.*` and `call.*`); `null` for `balance.*` events.
-     */
-    public Builder subject(Subject subject) {
-      this.subject = subject;
-      return this;
-    }
-
-    public Builder subject(String object, String id) {
-      return subject(Subject.builder().object(object).id(id).build());
     }
 
     /**
@@ -200,8 +158,6 @@ public final class AppointmentEvent {
       o.id = id;
       o.object = object;
       o.type = type;
-      o.useCase = useCase;
-      o.subject = subject;
       o.apiVersion = apiVersion;
       o.mode = mode;
       o.created = created;

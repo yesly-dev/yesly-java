@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A charge (`usage`), a top-up or an adjustment. Charges point to their use case, the appointment and its `external_id`; adjustments do not.
+ * A charge (`usage`), a top-up or an adjustment. Charges point to the appointment and its `external_id`; adjustments do not.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -31,12 +31,6 @@ public final class BalanceTransaction {
 
   @JsonProperty("amount")
   private Double amount;
-
-  @JsonProperty("use_case")
-  private String useCase;
-
-  @JsonProperty("subject")
-  private Subject subject;
 
   @JsonProperty("quantity")
   private Double quantity;
@@ -88,20 +82,6 @@ public final class BalanceTransaction {
    */
   public Double getAmount() {
     return amount;
-  }
-
-  /**
-   * The use case charged, on `usage`; `null` on top-ups and adjustments, which belong to the account.
-   */
-  public String getUseCase() {
-    return useCase;
-  }
-
-  /**
-   * The object charged, on `usage` (the appointment); `null` otherwise.
-   */
-  public Subject getSubject() {
-    return subject;
   }
 
   /**
@@ -158,8 +138,6 @@ public final class BalanceTransaction {
     private String type;
     private String channel;
     private Double amount;
-    private String useCase;
-    private Subject subject;
     private Double quantity;
     private String unit;
     private String appointment;
@@ -204,26 +182,6 @@ public final class BalanceTransaction {
     public Builder amount(Double amount) {
       this.amount = amount;
       return this;
-    }
-
-    /**
-     * The use case charged, on `usage`; `null` on top-ups and adjustments, which belong to the account.
-     */
-    public Builder useCase(String useCase) {
-      this.useCase = useCase;
-      return this;
-    }
-
-    /**
-     * The object charged, on `usage` (the appointment); `null` otherwise.
-     */
-    public Builder subject(Subject subject) {
-      this.subject = subject;
-      return this;
-    }
-
-    public Builder subject(String object, String id) {
-      return subject(Subject.builder().object(object).id(id).build());
     }
 
     /**
@@ -278,8 +236,6 @@ public final class BalanceTransaction {
       o.type = type;
       o.channel = channel;
       o.amount = amount;
-      o.useCase = useCase;
-      o.subject = subject;
       o.quantity = quantity;
       o.unit = unit;
       o.appointment = appointment;
