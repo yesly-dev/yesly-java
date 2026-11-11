@@ -18,7 +18,8 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class ClientTest {
-  private static final String APT = "{\"id\":\"apt_1\",\"object\":\"appointment\",\"external_id\":\"ORD-48213\",\"status\":\"scheduled\",\"cost\":0.0,\"unknown_field\":1}";
+  private static final String CNV = "{\"id\":\"cnv_7Qp4Ns2Xk9Lm3D\",\"object\":\"conversation\",\"status\":\"scheduled\",\"channels\":[\"whatsapp\",\"call\"],\"context\":{\"order\":\"8841\"},\"cost\":0.0,\"unknown_field\":1}";
+  private static final String LIST = "{\"object\":\"list\",\"url\":\"/v1/conversations\",\"has_more\":false,\"data\":[]}";
 
   private static Yesly client(FakeTransport t) {
     return new Yesly(ClientOptions.builder().apiKey("ysk_test_123").baseUrl("https://api.test/v1").transport(t).build()) {
@@ -28,46 +29,57 @@ class ClientTest {
   }
 
   @Test
-  void createsAnAppointmentAsOnTheWebsite() {
-    FakeTransport t = new FakeTransport().answer(201, APT);
+  void createsAConversationAsInTheReadme() {
+    FakeTransport t = new FakeTransport().answer(201, CNV);
     Yesly yesly = client(t);
 
-    Appointment apt =
-        yesly.appointments().create(AppointmentCreateParams.builder()
-            .externalId("ORD-48213")
-            .type("delivery")
-            .customer("Martha", "+34612345678")
-            .slot("2026-11-13T09:00:00+01:00", "2026-11-13T11:00:00+01:00")
-            .putMetadata("order_id", "PV-18342")
-            .putMetadata("route_id", "BIO-07")
-            .build());
+    Conversation conversation =
+        yesly.conversations().create(ConversationCreateParams.builder()
+            .agent("agt_8Hd2kQ4mZ1LpXy")
+            .contact(ContactInput.builder().externalId("customer-3391").name("Marta").phone("+34600000001").build())
+            .addChannel("whatsapp")
+            .addChannel("call")
+            .startAt("2026-12-01T10:00:00+01:00")
+            .putContext("order", "8841")
+            .putContext("delivery_window", "2026-12-02T09:00/13:00")
+            .build(),
+            RequestOptions.builder().idempotencyKey("order-8841-delivery").build());
 
-    assertEquals("apt_1", apt.getId());
-    assertEquals("scheduled", apt.getStatus());
+    assertEquals("cnv_7Qp4Ns2Xk9Lm3D", conversation.getId());
+    assertEquals("scheduled", conversation.getStatus());
+    assertEquals("8841", conversation.getContext().get("order"));
     FakeTransport.Call c = t.calls.get(0);
     assertEquals("POST", c.method);
-    assertEquals("https://api.test/v1/appointments", c.url);
+    assertEquals("https://api.test/v1/conversations", c.url);
     assertEquals("Bearer ysk_test_123", c.headers.get("Authorization"));
     assertEquals(ApiVersion.CURRENT, c.headers.get("Yesly-Version"));
     assertTrue(c.headers.get("User-Agent").startsWith("yesly-java/" + Version.VERSION + " "));
-    assertFalse(c.headers.containsKey("Idempotency-Key"));
+    assertEquals("order-8841-delivery", c.headers.get("Idempotency-Key"));
     JsonNode body = Json.read(c.body);
-    assertEquals("Martha", body.at("/customer/name").asText());
-    assertEquals("2026-11-13T11:00:00+01:00", body.at("/slot/end").asText());
-    assertEquals("BIO-07", body.at("/metadata/route_id").asText());
-    assertFalse(body.has("location"), "unset fields are not sent");
+    assertEquals("customer-3391", body.at("/contact/external_id").asText());
+    assertEquals("call", body.at("/channels/1").asText());
+    assertEquals("2026-12-02T09:00/13:00", body.at("/context/delivery_window").asText());
+    assertFalse(body.at("/contact").has("email"), "unset fields are not sent");
+  }
+
+  @Test
+  void aContactIdIsSentAsAString() {
+    FakeTransport t = new FakeTransport().answer(201, CNV);
+    client(t).conversations().create(ConversationCreateParams.builder().agent("agt_8Hd2kQ4mZ1LpXy").contact("ctc_3Kf9Lq2Wm7Rt4B").addChannel("call").build());
+    assertEquals("ctc_3Kf9Lq2Wm7Rt4B", Json.read(t.calls.get(0).body).get("contact").asText());
   }
 
   @Test
   void encodesIdsAndQuery() {
-    FakeTransport t = new FakeTransport().answer(200, APT).answer(200, "{\"object\":\"list\",\"url\":\"/v1/appointments\",\"has_more\":false,\"data\":[]}").answer(200, "{\"object\":\"list\",\"data\":[]}");
+    FakeTransport t = new FakeTransport().answer(200, CNV).answer(200, LIST).answer(200, "{\"id\":\"mem_1\",\"object\":\"memory_record\",\"deleted\":true}");
     Yesly y = client(t);
-    y.appointments().retrieve("apt/1");
-    y.appointments().list(AppointmentListParams.builder().status("no_reply").putMetadata("route_id", "BIO-07").limit(5L).build());
-    y.slots().list(SlotListParams.builder().available(true).build());
-    assertEquals("https://api.test/v1/appointments/apt%2F1", t.calls.get(0).url);
-    assertEquals("https://api.test/v1/appointments?status=no_reply&metadata%5Broute_id%5D=BIO-07&limit=5", t.calls.get(1).url);
-    assertEquals("https://api.test/v1/slots?available=true", t.calls.get(2).url);
+    y.conversations().retrieve("cnv/1");
+    y.conversations().list(ConversationListParams.builder().status("no_reply").agent("agt_8Hd2kQ4mZ1LpXy").limit(5L).build());
+    y.contacts().deleteMemory("ctc_3Kf9Lq2Wm7Rt4B", "mem/1");
+    assertEquals("https://api.test/v1/conversations/cnv%2F1", t.calls.get(0).url);
+    assertEquals("https://api.test/v1/conversations?agent=agt_8Hd2kQ4mZ1LpXy&status=no_reply&limit=5", t.calls.get(1).url);
+    assertEquals("DELETE", t.calls.get(2).method);
+    assertEquals("https://api.test/v1/contacts/ctc_3Kf9Lq2Wm7Rt4B/memory/mem%2F1", t.calls.get(2).url);
   }
 
   @Test
@@ -75,10 +87,8 @@ class ClientTest {
     FakeTransport t = new FakeTransport()
         .answer(500, "{\"error\":{\"type\":\"api_error\",\"message\":\"boom\"}}")
         .answer(503, "{}", Map.of("retry-after", "0"))
-        .answer(200, "{\"object\":\"list\",\"data\":[]}");
-    client(t).slots().create(SlotCreateParams.builder()
-        .addSlot(SlotCreate.builder().start("2026-11-13T09:00:00+01:00").end("2026-11-13T11:00:00+01:00").type("delivery").build())
-        .build());
+        .answer(200, "{\"id\":\"ctc_3Kf9Lq2Wm7Rt4B\",\"object\":\"contact\"}");
+    client(t).contacts().create(ContactCreateParams.builder().externalId("customer-3391").phone("+34600000001").build());
     assertEquals(3, t.calls.size());
     Set<String> keys = new HashSet<>();
     for (FakeTransport.Call c : t.calls) keys.add(c.headers.get("Idempotency-Key"));
@@ -87,14 +97,24 @@ class ClientTest {
   }
 
   @Test
-  void usesTheGivenIdempotencyKeyAndSendsAnEmptyObject() {
-    FakeTransport t = new FakeTransport().answer(200, APT).answer(200, APT);
-    Yesly y = client(t);
-    y.appointments().cancel("apt_1", AppointmentCancelParams.builder().reason("Shop closed").build(), RequestOptions.builder().idempotencyKey("cancel-apt_1").build());
-    y.appointments().cancel("apt_2");
-    assertEquals("cancel-apt_1", t.calls.get(0).headers.get("Idempotency-Key"));
-    assertEquals("{\"reason\":\"Shop closed\"}", t.calls.get(0).body);
-    assertEquals("{}", t.calls.get(1).body);
+  void usesTheGivenIdempotencyKeyAndSendsNoBodyToCancel() {
+    FakeTransport t = new FakeTransport().answer(200, CNV);
+    client(t).conversations().cancel("cnv_7Qp4Ns2Xk9Lm3D", RequestOptions.builder().idempotencyKey("cancel-order-8841").build());
+    FakeTransport.Call c = t.calls.get(0);
+    assertEquals("https://api.test/v1/conversations/cnv_7Qp4Ns2Xk9Lm3D/cancel", c.url);
+    assertEquals("cancel-order-8841", c.headers.get("Idempotency-Key"));
+  }
+
+  @Test
+  void readsTurnsWithoutIdsInOnePage() {
+    String turn = "{\"object\":\"turn\",\"role\":\"contact\",\"channel\":\"whatsapp\",\"message\":\"msg_1\",\"text\":\"Vale\",\"at\":\"2026-12-01T10:03:41+01:00\"}";
+    FakeTransport t = new FakeTransport().answer(200, "{\"object\":\"list\",\"url\":\"/v1/conversations/cnv_1/messages\",\"has_more\":false,\"data\":[" + turn + "," + turn + "]}");
+    Page<Turn> page = client(t).conversations().listMessages("cnv_1");
+    assertFalse(page.hasNextPage());
+    List<String> texts = new ArrayList<>();
+    for (Turn x : page) texts.add(x.getText());
+    assertEquals(List.of("Vale", "Vale"), texts);
+    assertEquals(1, t.calls.size());
   }
 
   @Test
@@ -106,11 +126,11 @@ class ClientTest {
 
   @Test
   void mapsErrorsAndDoesNotRetry4xx() {
-    FakeTransport t = new FakeTransport().answer(422, "{\"error\":{\"type\":\"invalid_request\",\"code\":\"phone_invalid\",\"param\":\"customer.phone\",\"message\":\"Not E.164\",\"request_id\":\"req_1\"}}");
-    InvalidRequestException e = assertThrows(InvalidRequestException.class, () -> client(t).appointments().retrieve("apt_1"));
+    FakeTransport t = new FakeTransport().answer(422, "{\"error\":{\"type\":\"invalid_request\",\"code\":\"phone_invalid\",\"param\":\"contact.phone\",\"message\":\"Not E.164\",\"request_id\":\"req_1\"}}");
+    InvalidRequestException e = assertThrows(InvalidRequestException.class, () -> client(t).contacts().create(ContactCreateParams.builder().phone("612").build()));
     assertEquals(422, e.getStatus());
     assertEquals("phone_invalid", e.getCode());
-    assertEquals("customer.phone", e.getParam());
+    assertEquals("contact.phone", e.getParam());
     assertEquals("req_1", e.getRequestId());
     assertEquals(1, t.calls.size());
   }
@@ -126,11 +146,11 @@ class ClientTest {
   @Test
   void iteratingAPageWalksEveryPage() {
     FakeTransport t = new FakeTransport()
-        .answer(200, "{\"object\":\"list\",\"url\":\"/v1/events\",\"has_more\":true,\"data\":[{\"id\":\"evt_3\",\"type\":\"appointment.created\",\"data\":{\"appointment\":{\"id\":\"apt_1\"}}},{\"id\":\"evt_2\"}]}")
+        .answer(200, "{\"object\":\"list\",\"url\":\"/v1/events\",\"has_more\":true,\"data\":[{\"id\":\"evt_3\",\"type\":\"conversation.created\",\"data\":{\"conversation\":{\"id\":\"cnv_1\"}}},{\"id\":\"evt_2\"}]}")
         .answer(200, "{\"object\":\"list\",\"url\":\"/v1/events\",\"has_more\":false,\"data\":[{\"id\":\"evt_1\"}]}");
     Page<Event> first = client(t).events().list(EventListParams.builder().limit(2L).build());
     assertEquals(2, first.getData().size());
-    assertEquals("apt_1", first.getData().get(0).getData().getAppointment().getId());
+    assertEquals("cnv_1", first.getData().get(0).getData().getConversation().getId());
     List<String> ids = new ArrayList<>();
     for (Event e : first) ids.add(e.getId());
     assertEquals(List.of("evt_3", "evt_2", "evt_1"), ids);

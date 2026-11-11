@@ -1,10 +1,10 @@
 package io.yesly.smoke;
 
 import io.yesly.Page;
+import io.yesly.RequestOptions;
 import io.yesly.Yesly;
 import io.yesly.exception.InvalidRequestException;
 import io.yesly.model.*;
-import java.time.LocalDate;
 
 /**
  * Calls the real API with a test key: one call per resource, then cleans up.
@@ -15,47 +15,65 @@ public final class Smoke {
   public static void main(String[] args) {
     Yesly yesly = new Yesly();
     if (!"test".equals(yesly.mode())) throw new IllegalStateException("Use a ysk_test_ key.");
-    String tomorrow = LocalDate.now().plusDays(1).toString();
     String externalId = "SDK-JAVA-" + System.currentTimeMillis();
 
     step("balance.retrieve", yesly.balance().retrieve().getObject());
-    Page<AppointmentType> types = yesly.appointmentTypes().list();
-    step("appointmentTypes.list", types.getData().get(0).getId());
-    step("locations.list", yesly.locations().list().getData().size());
+    Page<Agent> agents = yesly.agents().list();
+    step("agents.list", agents.getData().size());
+    step("senders.list", yesly.senders().list().getData().size());
+    step("templates.list", yesly.templates().list().getData().size());
 
-    Appointment apt = yesly.appointments().create(AppointmentCreateParams.builder()
-        .externalId(externalId)
-        .type(types.getData().get(0).getId())
-        .customer("SDK smoke", "+34600000001")
-        .slot(tomorrow + "T10:00:00+01:00", tomorrow + "T12:00:00+01:00")
-        .putMetadata("source", "sdk-smoke")
-        .build());
-    step("appointments.create", apt.getId() + " " + apt.getStatus());
-    step("appointments.retrieve", yesly.appointments().retrieve(apt.getId()).getExternalId());
+    Contact contact = yesly.contacts().create(ContactCreateParams.builder()
+        .externalId(externalId).name("SDK smoke").phone("+34600000001").putMetadata("source", "sdk-smoke").build());
+    step("contacts.create", contact.getId());
+    step("contacts.create again (same contact)",
+        yesly.contacts().create(ContactCreateParams.builder().externalId(externalId).phone("+34600000001").build()).getId().equals(contact.getId()));
+    step("contacts.retrieve", yesly.contacts().retrieve(contact.getId()).getExternalId());
+    step("contacts.update", yesly.contacts().update(contact.getId(), ContactUpdateParams.builder().putMetadata("note", "updated").build()).getMetadata().get("note"));
     int n = 0;
-    for (Appointment a : yesly.appointments().list(AppointmentListParams.builder().putMetadata("source", "sdk-smoke").limit(1L).build())) {
+    for (Contact c : yesly.contacts().list(ContactListParams.builder().limit(1L).build())) {
       if (++n >= 3) break;
     }
-    step("appointments.list (auto-paging, limit 1)", n);
-    step("appointments.update", yesly.appointments().update(apt.getId(), AppointmentUpdateParams.builder().putMetadata("note", "updated").build()).getMetadata().get("note"));
-    step("appointments.cancel (no params)", yesly.appointments().cancel(apt.getId()).getStatus());
+    step("contacts.list (auto-paging, limit 1)", n);
+    step("contacts.listMemory", yesly.contacts().listMemory(contact.getId()).getData().size());
 
-    WebhookEndpoint we = yesly.webhookEndpoints().create(WebhookEndpointCreateParams.builder().url("https://example.com/yesly-sdk-smoke").addEnabledEvent("appointment.confirmed").build());
+    Agent agent = agents.getData().stream().filter(a -> "active".equals(a.getStatus())).findFirst().orElse(null);
+    if (agent != null) {
+      ConversationCreateParams params = ConversationCreateParams.builder()
+          .agent(agent.getId()).contact(contact.getId()).addChannel(agent.getChannels().get(0)).build();
+      RequestOptions key = RequestOptions.builder().idempotencyKey(externalId + "-cnv").build();
+      Conversation cnv = yesly.conversations().create(params, key);
+      step("conversations.create", cnv.getId() + " " + cnv.getStatus());
+      step("conversations.create again (replayed)", yesly.conversations().create(params, key).getId().equals(cnv.getId()));
+      step("conversations.retrieve", yesly.conversations().retrieve(cnv.getId()).getStatus());
+      step("conversations.list", yesly.conversations().list(ConversationListParams.builder().contact(contact.getId()).build()).getData().size());
+      step("conversations.listMessages", yesly.conversations().listMessages(cnv.getId()).getData().size());
+      step("messages.list", yesly.messages().list(MessageListParams.builder().conversation(cnv.getId()).build()).getData().size());
+    } else {
+      step("conversations.*", "skipped: the account has no active agent");
+    }
+
+    OptOut optOut = yesly.optOuts().create(OptOutCreateParams.builder().channel("sms").address("+34600000099").build());
+    step("optOuts.create", optOut.getId());
+    step("optOuts.delete", yesly.optOuts().delete(optOut.getId()).getDeleted());
+
+    WebhookEndpoint we = yesly.webhookEndpoints().create(WebhookEndpointCreateParams.builder().url("https://example.com/yesly-sdk-smoke").addEnabledEvent("conversation.ended").build());
     step("webhookEndpoints.create", we.getId());
     step("webhookEndpoints.rollSecret", yesly.webhookEndpoints().rollSecret(we.getId()).getId());
     step("webhookEndpoints.delete", yesly.webhookEndpoints().delete(we.getId()).getDeleted());
 
     Page<Event> events = yesly.events().list(EventListParams.builder().limit(5L).build());
-    step("events.list", events.getData().size() + " events, first " + events.getData().get(0).getType());
-    step("events.retrieve", yesly.events().retrieve(events.getData().get(0).getId()).getId());
+    step("events.list", events.getData().size());
+    if (!events.getData().isEmpty()) step("events.retrieve", yesly.events().retrieve(events.getData().get(0).getId()).getId());
     step("balance.listTransactions", yesly.balance().listTransactions(BalanceListTransactionsParams.builder().limit(5L).build()).getData().size());
-    step("analytics.retrieveSummary", yesly.analytics().retrieveSummary(AnalyticsRetrieveSummaryParams.builder().range("7d").build()).getAppointments());
+    step("analytics.summary", yesly.analytics().summary(AnalyticsSummaryParams.builder().range("7d").build()).getConversations());
 
     try {
-      yesly.appointments().create(AppointmentCreateParams.builder().externalId(externalId + "-bad").customer("x", "612").slot(tomorrow + "T10:00:00+01:00", null).build());
+      yesly.contacts().create(ContactCreateParams.builder().externalId(externalId + "-bad").phone("612").build());
     } catch (InvalidRequestException e) {
       step("validation error", e.getClass().getSimpleName() + " " + e.getStatus() + " " + e.getCode() + " " + e.getParam() + (e.getRequestId() != null ? " with request id" : " NO REQUEST ID"));
     }
+    step("contacts.delete", yesly.contacts().delete(contact.getId()).getDeleted());
   }
 
   private static void step(String name, Object value) {

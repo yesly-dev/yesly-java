@@ -2,14 +2,14 @@
 
 The official Java library for the Yesly API.
 
-> Status: 0.1.0, not published yet. Covers API version `2026-10-01`.
+> Status: 0.2.0, not published yet. Covers API version `2026-11-11`.
 
 ## Install
 
 Gradle:
 
 ```kotlin
-implementation("io.yesly:yesly-java:0.1.0")
+implementation("io.yesly:yesly-java:0.2.0")
 ```
 
 Maven:
@@ -18,7 +18,7 @@ Maven:
 <dependency>
   <groupId>io.yesly</groupId>
   <artifactId>yesly-java</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
@@ -26,76 +26,91 @@ Java 11 or later. Depends on Jackson (`jackson-databind`).
 
 ## Usage
 
+Yesly runs agents built for your company. The usual integration is two calls:
+ask an agent to contact someone, and receive the outcome on a webhook.
+
 ```java
 Yesly yesly = new Yesly(System.getenv("YESLY_API_KEY"));
 
-yesly.appointments().create(AppointmentCreateParams.builder()
-    .externalId("ORD-48213")
-    .type("delivery")
-    .customer("Martha", "+34612345678")
-    .slot("2026-11-13T09:00:00+01:00", "2026-11-13T11:00:00+01:00")
-    .putMetadata("order_id", "PV-18342")
-    .putMetadata("route_id", "BIO-07")
+// Create the contact, or update it by your own id.
+Contact contact = yesly.contacts().create(ContactCreateParams.builder()
+    .externalId("customer-3391")
+    .name("Marta")
+    .phone("+34600000001")
     .build());
+
+// Ask the delivery agent to contact her: WhatsApp first, then a call.
+Conversation conversation = yesly.conversations().create(
+    ConversationCreateParams.builder()
+        .agent("agt_8Hd2kQ4mZ1LpXy")
+        .contact(contact.getId())
+        .addChannel("whatsapp")
+        .addChannel("call")
+        .startAt("2026-12-01T10:00:00+01:00")
+        .putContext("order", "8841")
+        .putContext("delivery_window", "2026-12-02T09:00/13:00")
+        .build(),
+    RequestOptions.builder().idempotencyKey("order-8841-delivery").build());
+conversation.getStatus(); // "scheduled"
 ```
 
-`new Yesly()` reads `YESLY_API_KEY`. Every resource of the API reference has an
-accessor: `appointments()`, `imports()`, `slots()`, `appointmentTypes()`,
-`locations()`, `webhookEndpoints()`, `events()`, `balance()` and
-`analytics()`. Parameters are `…Params` classes with builders, and responses
-are model classes (`io.yesly.model`) with getters; unknown fields are ignored.
-`appointments().importAppointments(…)` is the import call (`import` is a Java
-keyword).
+`contact` also takes the data to find or create one
+(`ContactInput.builder().externalId(…).phone(…).build()`), so the first call
+is optional. `new Yesly()` reads `YESLY_API_KEY`. Every resource of the API
+reference has an accessor: `agents()`, `senders()`, `contacts()`,
+`conversations()`, `messages()`, `templates()`, `optOuts()`, `analytics()`,
+`balance()`, `webhookEndpoints()` and `events()`. Parameters are `…Params`
+classes with builders, and responses are model classes (`io.yesly.model`)
+with getters; unknown fields are ignored.
 
 ## Integration checklist
 
-The usual integration is two calls: create an appointment as soon as it is
-booked, and handle the customer's answer on a webhook. These are the points an
-integration most often gets wrong; check them before going live. The whole API
-reference is also in Markdown, for agents and other tools:
-[llms-full.txt](https://yesly.dev/llms-full.txt) (index in
+These are the points an integration most often gets wrong; check them before
+going live. The whole API reference is also in Markdown, for agents and other
+tools: [llms-full.txt](https://yesly.dev/llms-full.txt) (index in
 [llms.txt](https://yesly.dev/llms.txt), OpenAPI in
 [openapi.yaml](https://yesly.dev/openapi.yaml)).
 
-1. **Set up the appointment types first** (`yesly.appointmentTypes().create`,
-   or in the dashboard). A type sets how the time reads (`time_format`:
-   `window`, "between 9:00 and 11:00", or `exact`, "at 17:30"), when the first
-   message goes out (`first_contact`) and how far the customer may move it
-   (`reschedule`). With a `window` type, `slot.end` is required
-   (`slot_end_required`). Send `type` with every appointment when the account
-   has more than one type.
-2. **Use your own id as `external_id`**: the order, booking or visit number.
-   Creating is idempotent by it, so sending the same appointment again returns
-   the existing one, and the same id with different data is a `409`
-   `external_id_conflict`. To change the time or the customer, update the
-   appointment (`yesly.appointments().update`) instead of creating a new one.
-3. **Send times with an offset** (`2026-11-13T09:00:00+01:00`) and phones in
-   E.164. Yesly contacts Spanish numbers only, and no premium or special-rate
-   ones (`phone_not_allowed`).
-4. **Handle the answer on a webhook.** Verify the signature over the raw body,
-   answer `2xx` within 10 seconds before doing slow work, and skip event ids
-   you have already handled: a delivery can arrive more than once. The
-   outcomes are `appointment.confirmed`, `appointment.cancelled`,
-   `appointment.rescheduled`, `appointment.reschedule_requested` and
-   `appointment.no_reply`; each carries your `external_id` and `metadata`.
-5. **Build and test with a `ysk_test_` key.** The test phone numbers choose
-   the outcome (`+34600000001` confirms on WhatsApp, `+34600000009` never
-   answers; the full table is in the reference) and the chain runs in seconds.
-   A real number with a test key is refused (`test_number_required`).
-6. **Retry only what can succeed.** The library already retries network
+1. **Read your agent first** (`yesly.agents().retrieve`). It declares the
+   `outcomes` it can end with and the `context` it expects; a context that
+   does not fit is a `422` `context_invalid` with the field in `param`.
+2. **Use your own id as the contact's `external_id`.** Contacts are matched
+   only by exact identifiers (`external_id`, then a phone, then an email), and
+   `contacts().create` adds what is new to the one it finds. An identifier
+   that belongs to another contact is a `409` `contact_identifier_taken`:
+   merge the two first (`yesly.contacts().merge`).
+3. **Send an `Idempotency-Key` with every new conversation**, derived from your
+   own data (`order-8841-delivery`). The library adds a random one to each
+   call; your own makes a retry after a crash safe too.
+4. **Send times with an offset** (`2026-12-01T10:00:00+01:00`) and phones in
+   E.164. Live contacts must be in Spain, and not premium or special-rate
+   numbers (`phone_not_allowed`).
+5. **Handle the outcome on a webhook.** Verify the signature over the raw
+   body, answer `2xx` within 10 seconds before doing slow work, and skip event
+   ids you have already handled: a delivery can arrive more than once.
+   `conversation.ended` carries the conversation with its `outcome`
+   (`code` and `data`); `conversation.no_reply`, `conversation.cancelled` and
+   `conversation.failed` close the others.
+6. **Build and test with a `ysk_test_` key.** The test phone numbers choose
+   what happens (`+34600000001` answers and the agent ends with its first
+   outcome, `+34600000009` never answers; the full table is in the reference)
+   and waits last seconds.
+7. **Retry only what can succeed.** The library already retries network
    errors, `408`, `429` and `5xx`, with the same idempotency key. A `4xx`
    fails the same way again: fix the request using the error's `code` and
    `param`.
-7. **Keep keys on the server.** A read-only key can list and retrieve but not
-   write (`api_key_read_only`).
+8. **Keep keys on the server.** A read-only key can list and retrieve but not
+   write (`api_key_read_only`); a key limited to one agent gets `403`
+   `api_key_agent_scope` on any other.
 
 ## Webhooks
 
 ```java
 try {
   Event event = Webhook.constructEvent(rawBody, request.getHeader("Yesly-Signature"), System.getenv("YESLY_WEBHOOK_SECRET"));
-  if (event.getType().equals("appointment.confirmed")) {
-    String externalId = event.getData().getAppointment().getExternalId();
+  if (event.getType().equals("conversation.ended")) {
+    Conversation c = event.getData().getConversation();
+    Outcome outcome = c.getOutcome(); // code "rescheduled", data {delivery_window=2026-12-03T09:00/13:00}
   }
 } catch (SignatureVerificationException e) {
   response.setStatus(400);
@@ -116,8 +131,8 @@ A list call returns its first `Page`. Iterating the page walks every page:
 Page<Event> page = yesly.events().list(EventListParams.builder().limit(50L).build());
 page.getData(); page.getHasMore(); page.nextPage();
 
-for (Appointment apt : yesly.appointments().list(AppointmentListParams.builder().status("no_reply").build())) {
-  System.out.println(apt.getExternalId());
+for (Conversation c : yesly.conversations().list(ConversationListParams.builder().agent("agt_8Hd2kQ4mZ1LpXy").status("no_reply").build())) {
+  System.out.println(c.getId() + " " + c.getContext());
 }
 ```
 
@@ -134,19 +149,18 @@ subclass: `InvalidRequestException` (400, 422), `AuthenticationException` (401),
 
 Network errors, timeouts, 408, 429 and 5xx are retried twice with backoff,
 honouring `Retry-After`. POSTs that take an `Idempotency-Key` get one per call,
-reused on every retry; pass your own with `RequestOptions`. Creating an
-appointment is idempotent by `external_id` instead.
+reused on every retry; pass your own with `RequestOptions`.
 
 ```java
 Yesly yesly = new Yesly(ClientOptions.builder().apiKey(key).timeout(Duration.ofSeconds(10)).maxRetries(4).build());
-yesly.appointments().cancel("apt_…", AppointmentCancelParams.builder().reason("Shop closed").build(),
-    RequestOptions.builder().idempotencyKey("cancel-ORD-48213").build());
+yesly.conversations().cancel("cnv_7Qp4Ns2Xk9Lm3D", RequestOptions.builder().idempotencyKey("cancel-order-8841").build());
 ```
 
 ## Test mode
 
 A `ysk_test_` key runs everything in test mode; `yesly.mode()` says which. Use
-the test phone numbers from the API reference.
+the test phone numbers from the API reference (`+34600000001` answers on the
+first channel and the agent ends with its first outcome, and so on).
 
 ## Development
 
