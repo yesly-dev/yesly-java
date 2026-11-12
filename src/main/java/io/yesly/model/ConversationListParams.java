@@ -41,6 +41,9 @@ public final class ConversationListParams {
   @JsonProperty("to")
   private String to;
 
+  @JsonProperty("order")
+  private String order;
+
   @JsonProperty("limit")
   private Long limit;
 
@@ -106,6 +109,13 @@ public final class ConversationListParams {
   }
 
   /**
+   * `desc` (default) lists the newest first; `asc` the oldest. `starting_after` continues in the same order.
+   */
+  public String getOrder() {
+    return order;
+  }
+
+  /**
    * Between 1 and 100. Default 20.
    */
   public Long getLimit() {
@@ -137,6 +147,7 @@ public final class ConversationListParams {
     private String outcome;
     private String from;
     private String to;
+    private String order;
     private Long limit;
     private String startingAfter;
 
@@ -207,6 +218,14 @@ public final class ConversationListParams {
     }
 
     /**
+     * `desc` (default) lists the newest first; `asc` the oldest. `starting_after` continues in the same order.
+     */
+    public Builder order(String order) {
+      this.order = order;
+      return this;
+    }
+
+    /**
      * Between 1 and 100. Default 20.
      */
     public Builder limit(Long limit) {
@@ -232,6 +251,7 @@ public final class ConversationListParams {
       o.outcome = outcome;
       o.from = from;
       o.to = to;
+      o.order = order;
       o.limit = limit;
       o.startingAfter = startingAfter;
       return o;

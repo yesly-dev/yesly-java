@@ -17,7 +17,7 @@ public final class ConversationsService {
   /**
    * List conversations.
    *
-   * Newest first, by creation.
+   * Newest first by creation, or oldest first with `order=asc`.
    *
    * <code>GET /conversations</code>
    */
@@ -28,7 +28,7 @@ public final class ConversationsService {
   /**
    * List conversations.
    *
-   * Newest first, by creation.
+   * Newest first by creation, or oldest first with `order=asc`.
    *
    * <code>GET /conversations</code>
    */
@@ -39,7 +39,7 @@ public final class ConversationsService {
   /**
    * List conversations.
    *
-   * Newest first, by creation.
+   * Newest first by creation, or oldest first with `order=asc`.
    *
    * <code>GET /conversations</code>
    */

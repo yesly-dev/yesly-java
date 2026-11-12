@@ -13,6 +13,7 @@ public class Yesly extends Client {
   private final SendersService senders;
   private final ContactsService contacts;
   private final ConversationsService conversations;
+  private final CampaignsService campaigns;
   private final MessagesService messages;
   private final TemplatesService templates;
   private final OptOutsService optOuts;
@@ -35,6 +36,7 @@ public class Yesly extends Client {
     this.senders = new SendersService(this);
     this.contacts = new ContactsService(this);
     this.conversations = new ConversationsService(this);
+    this.campaigns = new CampaignsService(this);
     this.messages = new MessagesService(this);
     this.templates = new TemplatesService(this);
     this.optOuts = new OptOutsService(this);
@@ -58,6 +60,10 @@ public class Yesly extends Client {
 
   public ConversationsService conversations() {
     return conversations;
+  }
+
+  public CampaignsService campaigns() {
+    return campaigns;
   }
 
   public MessagesService messages() {

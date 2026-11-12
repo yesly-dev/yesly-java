@@ -44,6 +44,9 @@ public final class AnalyticsSummary {
   @JsonProperty("transferred")
   private Long transferred;
 
+  @JsonProperty("calls")
+  private AnalyticsSummaryCalls calls;
+
   @JsonProperty("by_channel")
   private AnalyticsSummaryByChannel byChannel;
 
@@ -116,6 +119,13 @@ public final class AnalyticsSummary {
   }
 
   /**
+   * Calls either way (one conversation may make several), by the day of their conversation.
+   */
+  public AnalyticsSummaryCalls getCalls() {
+    return calls;
+  }
+
+  /**
    * Conversations by the last channel used.
    */
   public AnalyticsSummaryByChannel getByChannel() {
@@ -183,6 +193,7 @@ public final class AnalyticsSummary {
     private Map<String, Long> outcomes;
     private Long engaged;
     private Long transferred;
+    private AnalyticsSummaryCalls calls;
     private AnalyticsSummaryByChannel byChannel;
     private AnalyticsSummaryUsage usage;
     private AnalyticsSummarySpend spend;
@@ -253,6 +264,14 @@ public final class AnalyticsSummary {
      */
     public Builder transferred(Long transferred) {
       this.transferred = transferred;
+      return this;
+    }
+
+    /**
+     * Calls either way (one conversation may make several), by the day of their conversation.
+     */
+    public Builder calls(AnalyticsSummaryCalls calls) {
+      this.calls = calls;
       return this;
     }
 
@@ -351,6 +370,7 @@ public final class AnalyticsSummary {
       o.outcomes = outcomes;
       o.engaged = engaged;
       o.transferred = transferred;
+      o.calls = calls;
       o.byChannel = byChannel;
       o.usage = usage;
       o.spend = spend;

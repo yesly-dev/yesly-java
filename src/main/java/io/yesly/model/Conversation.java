@@ -80,6 +80,9 @@ public final class Conversation {
   @JsonProperty("recording")
   private String recording;
 
+  @JsonProperty("campaign")
+  private String campaign;
+
   @JsonProperty("created")
   private String created;
 
@@ -226,6 +229,13 @@ public final class Conversation {
     return recording;
   }
 
+  /**
+   * Id of the campaign that started it, prefixed `cmp_`. `null` when it did not come from a campaign.
+   */
+  public String getCampaign() {
+    return campaign;
+  }
+
   public String getCreated() {
     return created;
   }
@@ -261,6 +271,7 @@ public final class Conversation {
     private Double cost;
     private String transcript;
     private String recording;
+    private String campaign;
     private String created;
 
     private Builder() {}
@@ -447,6 +458,14 @@ public final class Conversation {
       return this;
     }
 
+    /**
+     * Id of the campaign that started it, prefixed `cmp_`. `null` when it did not come from a campaign.
+     */
+    public Builder campaign(String campaign) {
+      this.campaign = campaign;
+      return this;
+    }
+
     public Builder created(String created) {
       this.created = created;
       return this;
@@ -475,6 +494,7 @@ public final class Conversation {
       o.cost = cost;
       o.transcript = transcript;
       o.recording = recording;
+      o.campaign = campaign;
       o.created = created;
       return o;
     }

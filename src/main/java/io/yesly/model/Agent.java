@@ -41,6 +41,9 @@ public final class Agent {
   @JsonProperty("voice")
   private String voice;
 
+  @JsonProperty("email_profile")
+  private String emailProfile;
+
   @JsonProperty("models")
   private AgentModels models;
 
@@ -127,6 +130,13 @@ public final class Agent {
   }
 
   /**
+   * The email profile its emails go out through: one of the company's own SMTP servers, set up in the dashboard (Settings → Email). `null`: Yesly's sender, with the company's name.
+   */
+  public String getEmailProfile() {
+    return emailProfile;
+  }
+
+  /**
    * The models it runs on, as `provider:model`. Set by Yesly.
    */
   public AgentModels getModels() {
@@ -206,6 +216,7 @@ public final class Agent {
     private String status;
     private List<String> channels;
     private String voice;
+    private String emailProfile;
     private AgentModels models;
     private AgentLimits limits;
     private ContactHours contactHours;
@@ -281,6 +292,14 @@ public final class Agent {
      */
     public Builder voice(String voice) {
       this.voice = voice;
+      return this;
+    }
+
+    /**
+     * The email profile its emails go out through: one of the company's own SMTP servers, set up in the dashboard (Settings → Email). `null`: Yesly's sender, with the company's name.
+     */
+    public Builder emailProfile(String emailProfile) {
+      this.emailProfile = emailProfile;
       return this;
     }
 
@@ -407,6 +426,7 @@ public final class Agent {
       o.status = status;
       o.channels = channels;
       o.voice = voice;
+      o.emailProfile = emailProfile;
       o.models = models;
       o.limits = limits;
       o.contactHours = contactHours;

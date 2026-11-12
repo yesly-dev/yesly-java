@@ -17,7 +17,7 @@ public final class BalanceService {
   /**
    * Retrieve the balance.
    *
-   * Yesly is prepaid. Each SMS, WhatsApp message and email, and each started minute of a call that was picked up, is taken from the balance at your account's prices; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. A live call holds its longest cost (the agent's `max_call_minutes`) until it ends. Top-ups are made by card in the dashboard and cannot be made through the API.
+   * Yesly is prepaid. The balance belongs to your organization: every account in it spends from the same one, and this endpoint returns it whichever account's key you use. Each SMS, WhatsApp message and email, and each started minute of a call that was picked up, is taken from it at your account's prices; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. A live call holds its longest cost (the agent's `max_call_minutes`) until it ends. Top-ups are made by card in the dashboard and cannot be made through the API.
    *
    * <code>GET /balance</code>
    */
@@ -28,7 +28,7 @@ public final class BalanceService {
   /**
    * Retrieve the balance.
    *
-   * Yesly is prepaid. Each SMS, WhatsApp message and email, and each started minute of a call that was picked up, is taken from the balance at your account's prices; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. A live call holds its longest cost (the agent's `max_call_minutes`) until it ends. Top-ups are made by card in the dashboard and cannot be made through the API.
+   * Yesly is prepaid. The balance belongs to your organization: every account in it spends from the same one, and this endpoint returns it whichever account's key you use. Each SMS, WhatsApp message and email, and each started minute of a call that was picked up, is taken from it at your account's prices; calls nobody picks up are free. A message that could not be sent is refunded with an `adjustment`. A live call holds its longest cost (the agent's `max_call_minutes`) until it ends. Top-ups are made by card in the dashboard and cannot be made through the API.
    *
    * <code>GET /balance</code>
    */
@@ -39,7 +39,7 @@ public final class BalanceService {
   /**
    * List balance transactions.
    *
-   * Every charge, top-up and adjustment, newest first. Charges point to the agent, the conversation and the message, so you can pass the cost on to an order or a customer.
+   * Every charge and adjustment of your account, newest first. Charges point to the agent, the conversation and the message, so you can pass the cost on to an order or a customer. Top-ups belong to the organization and are listed in the dashboard, with every account's charges.
    *
    * <code>GET /balance/transactions</code>
    */
@@ -50,7 +50,7 @@ public final class BalanceService {
   /**
    * List balance transactions.
    *
-   * Every charge, top-up and adjustment, newest first. Charges point to the agent, the conversation and the message, so you can pass the cost on to an order or a customer.
+   * Every charge and adjustment of your account, newest first. Charges point to the agent, the conversation and the message, so you can pass the cost on to an order or a customer. Top-ups belong to the organization and are listed in the dashboard, with every account's charges.
    *
    * <code>GET /balance/transactions</code>
    */
@@ -61,7 +61,7 @@ public final class BalanceService {
   /**
    * List balance transactions.
    *
-   * Every charge, top-up and adjustment, newest first. Charges point to the agent, the conversation and the message, so you can pass the cost on to an order or a customer.
+   * Every charge and adjustment of your account, newest first. Charges point to the agent, the conversation and the message, so you can pass the cost on to an order or a customer. Top-ups belong to the organization and are listed in the dashboard, with every account's charges.
    *
    * <code>GET /balance/transactions</code>
    */

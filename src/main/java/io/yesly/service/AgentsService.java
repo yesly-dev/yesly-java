@@ -57,7 +57,7 @@ public final class AgentsService {
   /**
    * Update an agent's settings.
    *
-   * Changes the settings you own: voice, limits, contact hours, recording, the disclosure sentence and the transfer targets. The agent's code, models, outcomes and context are Yesly's: ask for a new version. Accounts with EU data residency cannot choose a voice that is processed outside the EU (`voice_not_in_eu`).
+   * Changes the settings you own: voice, email profile, limits, contact hours, recording, the disclosure sentence and the transfer targets. The agent's code, models, outcomes and context are Yesly's: ask for a new version. Accounts with EU data residency cannot choose a voice that is processed outside the EU (`voice_not_in_eu`).
    *
    * <code>PATCH /agents/{id}</code>
    */
@@ -68,7 +68,7 @@ public final class AgentsService {
   /**
    * Update an agent's settings.
    *
-   * Changes the settings you own: voice, limits, contact hours, recording, the disclosure sentence and the transfer targets. The agent's code, models, outcomes and context are Yesly's: ask for a new version. Accounts with EU data residency cannot choose a voice that is processed outside the EU (`voice_not_in_eu`).
+   * Changes the settings you own: voice, email profile, limits, contact hours, recording, the disclosure sentence and the transfer targets. The agent's code, models, outcomes and context are Yesly's: ask for a new version. Accounts with EU data residency cannot choose a voice that is processed outside the EU (`voice_not_in_eu`).
    *
    * <code>PATCH /agents/{id}</code>
    */

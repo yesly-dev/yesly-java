@@ -26,6 +26,9 @@ public final class BalanceTransaction {
   @JsonProperty("type")
   private String type;
 
+  @JsonProperty("account")
+  private String account;
+
   @JsonProperty("channel")
   private String channel;
 
@@ -71,6 +74,13 @@ public final class BalanceTransaction {
    */
   public String getType() {
     return type;
+  }
+
+  /**
+   * The account that spent it; `null` for the organization's top-ups.
+   */
+  public String getAccount() {
+    return account;
   }
 
   /**
@@ -146,6 +156,7 @@ public final class BalanceTransaction {
     private String id;
     private String object;
     private String type;
+    private String account;
     private String channel;
     private Double amount;
     private Double quantity;
@@ -176,6 +187,14 @@ public final class BalanceTransaction {
      */
     public Builder type(String type) {
       this.type = type;
+      return this;
+    }
+
+    /**
+     * The account that spent it; `null` for the organization's top-ups.
+     */
+    public Builder account(String account) {
+      this.account = account;
       return this;
     }
 
@@ -253,6 +272,7 @@ public final class BalanceTransaction {
       o.id = id;
       o.object = object;
       o.type = type;
+      o.account = account;
       o.channel = channel;
       o.amount = amount;
       o.quantity = quantity;

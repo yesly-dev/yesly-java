@@ -20,6 +20,9 @@ public final class AgentUpdateParams {
   @JsonProperty("voice")
   private String voice;
 
+  @JsonProperty("email_profile")
+  private String emailProfile;
+
   @JsonProperty("limits")
   private AgentUpdateParamsLimits limits;
 
@@ -42,6 +45,13 @@ public final class AgentUpdateParams {
    */
   public String getVoice() {
     return voice;
+  }
+
+  /**
+   * One of the company's email profiles, or `null` for Yesly's sender.
+   */
+  public String getEmailProfile() {
+    return emailProfile;
   }
 
   /**
@@ -87,6 +97,7 @@ public final class AgentUpdateParams {
 
   public static final class Builder {
     private String voice;
+    private String emailProfile;
     private AgentUpdateParamsLimits limits;
     private ContactHours contactHours;
     private AgentUpdateParamsRecording recording;
@@ -100,6 +111,14 @@ public final class AgentUpdateParams {
      */
     public Builder voice(String voice) {
       this.voice = voice;
+      return this;
+    }
+
+    /**
+     * One of the company's email profiles, or `null` for Yesly's sender.
+     */
+    public Builder emailProfile(String emailProfile) {
+      this.emailProfile = emailProfile;
       return this;
     }
 
@@ -157,6 +176,7 @@ public final class AgentUpdateParams {
     public AgentUpdateParams build() {
       AgentUpdateParams o = new AgentUpdateParams();
       o.voice = voice;
+      o.emailProfile = emailProfile;
       o.limits = limits;
       o.contactHours = contactHours;
       o.recording = recording;
